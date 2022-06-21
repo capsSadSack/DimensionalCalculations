@@ -15,6 +15,7 @@ namespace Physics.PhysicalDimensions
 
         public List<Dimension> Dimension;
 
+
         public PhysicalQuantity(double value, List<Dimension> dimensions)
         {
             this.Value = value;
@@ -39,7 +40,6 @@ namespace Physics.PhysicalDimensions
             // Исключить повторения возможных единиц измерения 
             this.Dimension = dimensionsArray.ToList();
         }
-
 
 
         public double ToSI()
