@@ -28,6 +28,7 @@ namespace Physics.PhysicalDimensions
             this.Dimension = dimensions.ToList();
         }
 
+        // TODO: [CG, 2022.06.28] Хрень, плохая сигнатура - неочевидная
         public PhysicalQuantity(double value, params Tuple<DimensionName, int>[] dimensions)
         {
             this.Value = value;
