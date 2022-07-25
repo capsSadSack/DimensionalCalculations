@@ -4,21 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Physics.PhysicalDimensions.Units.UnitsLength
+namespace DimensionalCalculations.Units.UnitsLength
 {
     public class Meter : LengthUnit
     {
-        public override string Name
-        {
-            get
-            {
-                return "m";
-            }
-        }
 
-        public override double ToCGS(double value)
+        public override double FromSI(double value)
         {
-            return value / 100.0;
+            return value;
         }
 
         public override double ToSI(double value)

@@ -4,23 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Physics.PhysicalDimensions.Units.UnitsMass
+namespace DimensionalCalculations.Units.UnitsMass
 {
-    public class MassUnit : AbstractUnit
+    public abstract class MassUnit : AbstractUnit
     {
-        public override int[] DimArray => new int[] { 0, 1, 0, 0, 0, 0, 0 };
-
-        public override string Name => "Mass unit";
-
-
-        public override double ToCGS(double value)
+        protected MassUnit()
         {
-            throw new NotImplementedException();
-        }
-
-        public override double ToSI(double value)
-        {
-            throw new NotImplementedException();
+            Dimension = new DimensionVector()
+            {
+                Mass = 1
+            };
         }
     }
 }

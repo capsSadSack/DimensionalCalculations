@@ -4,19 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Physics.PhysicalDimensions.Units.UnitsTime
+namespace DimensionalCalculations.Units.UnitsTime
 {
     public class Second : TimeUnit
     {
-        public override string Name
-        {
-            get
-            {
-                return "s";
-            }
-        }
-
-        public override double ToCGS(double value)
+        public override double FromSI(double value)
         {
             return value;
         }

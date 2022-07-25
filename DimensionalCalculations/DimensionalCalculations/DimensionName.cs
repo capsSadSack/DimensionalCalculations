@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Physics.PhysicalDimensions.Units.UnitsLength;
-using Physics.PhysicalDimensions.Units.UnitsTime;
+using DimensionalCalculations.Units.UnitsLength;
+using DimensionalCalculations.Units.UnitsTime;
 
-namespace Physics.PhysicalDimensions
+namespace DimensionalCalculations
 {
     public enum DimensionName
     {
