@@ -4,21 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Physics.PhysicalDimensions.Units.UnitsLength
+namespace DimensionalCalculations.Units.UnitsLength
 {
     public class Mile : LengthUnit
     {
-        public override string Name
+        public override double FromSI(double value)
         {
-            get
-            {
-                return "mi";
-            }
-        }
-
-        public override double ToCGS(double value)
-        {
-            return value * 160934.4;
+            return value / 1609.344;
         }
 
         public override double ToSI(double value)

@@ -1,13 +1,11 @@
 ﻿using DimensionalCalculations;
 using System.Collections.Generic;
 
-namespace Physics.PhysicalDimensions
+namespace DimensionalCalculations
 {
     public abstract class AbstractUnit
     {
         public DimensionVector Dimension { get; protected set; }
-
-
 
         public abstract double ToSI(double value);
 
