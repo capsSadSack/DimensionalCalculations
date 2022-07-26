@@ -1,4 +1,6 @@
-﻿namespace DimensionalCalculations
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DimensionalCalculations
 {
     public struct DimensionVector
     {
@@ -86,5 +88,19 @@
         {
             return a + (-b);
         }
+
+        public static bool operator ==(DimensionVector dv1, DimensionVector dv2)
+        {
+            return dv1.Candela == dv2.Candela
+                && dv1.Current == dv2.Current
+                && dv1.Length == dv2.Length
+                && dv1.Mass == dv2.Mass
+                && dv1.Mole == dv2.Mole
+                && dv1.Time == dv2.Time
+                && dv1.Temperature == dv2.Temperature;
+        }
+
+        public static bool operator !=(DimensionVector dv1, DimensionVector dv2)
+            => !(dv1 == dv2);
     }
 }

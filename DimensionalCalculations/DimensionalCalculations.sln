@@ -5,11 +5,13 @@ VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DimensionalCalculations", "DimensionalCalculations\DimensionalCalculations.csproj", "{B5F510BE-38E6-48FF-9F5E-4784B33F598D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DimensionalCalculatorConsole", "DimensionalCalculatorConsole\DimensionalCalculatorConsole.csproj", "{74CD8442-00B3-4EF6-AE84-41D2356C54D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DimensionalCalculatorConsole", "DimensionalCalculatorConsole\DimensionalCalculatorConsole.csproj", "{74CD8442-00B3-4EF6-AE84-41D2356C54D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StiringParsing", "StiringParsing\StiringParsing.csproj", "{6BD6F7BF-BC78-4F1D-9122-800F69D89F4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StiringParsing", "StiringParsing\StiringParsing.csproj", "{6BD6F7BF-BC78-4F1D-9122-800F69D89F4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringParsing.Tests", "StringParsing.Tests\StringParsing.Tests.csproj", "{E437F6F9-2DBD-43C8-BC2A-9BEBFB27A7BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringParsing.Tests", "StringParsing.Tests\StringParsing.Tests.csproj", "{E437F6F9-2DBD-43C8-BC2A-9BEBFB27A7BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DimensionalCalculations.Tests", "DimensionalCalculations.Tests\DimensionalCalculations.Tests.csproj", "{44363704-826E-44AF-AD19-D64610D3B910}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{E437F6F9-2DBD-43C8-BC2A-9BEBFB27A7BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E437F6F9-2DBD-43C8-BC2A-9BEBFB27A7BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E437F6F9-2DBD-43C8-BC2A-9BEBFB27A7BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44363704-826E-44AF-AD19-D64610D3B910}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44363704-826E-44AF-AD19-D64610D3B910}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44363704-826E-44AF-AD19-D64610D3B910}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44363704-826E-44AF-AD19-D64610D3B910}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
