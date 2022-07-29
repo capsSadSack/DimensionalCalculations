@@ -102,5 +102,16 @@ namespace DimensionalCalculations
 
         public static bool operator !=(DimensionVector dv1, DimensionVector dv2)
             => !(dv1 == dv2);
+
+        public bool IsDimensionless()
+        {
+            return Candela == 0
+                && Current == 0
+                && Length == 0
+                && Mass == 0
+                && Mole == 0
+                && Time == 0
+                && Temperature == 0;
+        }
     }
 }

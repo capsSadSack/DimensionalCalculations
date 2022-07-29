@@ -39,6 +39,12 @@ namespace DimensionalCalculations
         }
 
 
+        public bool IsDimensionless()
+        {
+            return Dimension.IsDimensionless();
+        }
+
+
         #region Operators
 
         public static PhysicalQuantity2 operator +(PhysicalQuantity2 quantity1, PhysicalQuantity2 quantity2)
@@ -62,6 +68,39 @@ namespace DimensionalCalculations
         public static PhysicalQuantity2 operator -(PhysicalQuantity2 quantity1, PhysicalQuantity2 quantity2)
         {
             return quantity1 + (-quantity2);
+        }
+
+        public static PhysicalQuantity2 operator *(PhysicalQuantity2 quantity1, PhysicalQuantity2 quantity2)
+        {
+            double value = quantity1.Value * quantity2.Value;
+            DimensionVector dimension = quantity1.Dimension + quantity2.Dimension;
+
+            return new PhysicalQuantity2(value, dimension);
+        }
+
+        public static PhysicalQuantity2 operator *(PhysicalQuantity2 quantity, double number)
+        {
+            double value = quantity.Value * number;
+            return new PhysicalQuantity2(value, quantity.Dimension);
+        }
+
+        public static PhysicalQuantity2 operator *(double number, PhysicalQuantity2 quantity)
+        {
+            return quantity * number; ;
+        }
+
+        public static PhysicalQuantity2 operator /(PhysicalQuantity2 quantity1, PhysicalQuantity2 quantity2)
+        {
+            double value = quantity1.Value / quantity2.Value;
+            DimensionVector dimension = quantity1.Dimension - quantity2.Dimension;
+
+            return new PhysicalQuantity2(value, dimension);
+        }
+
+        public static PhysicalQuantity2 operator /(PhysicalQuantity2 quantity, double number)
+        {
+            double value = quantity.Value / number;
+            return new PhysicalQuantity2(value, quantity.Dimension);
         }
 
         #endregion 
