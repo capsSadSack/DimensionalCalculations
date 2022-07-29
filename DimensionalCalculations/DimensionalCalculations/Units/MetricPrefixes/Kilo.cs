@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DimensionalCalculations.Units.MetricPrefixes
 {
-    internal class Kilo : MultiplicationPrefix
+    public class Kilo : MultiplicationPrefix
     {
         protected override int MultiplicationNumber => 1_000;
 

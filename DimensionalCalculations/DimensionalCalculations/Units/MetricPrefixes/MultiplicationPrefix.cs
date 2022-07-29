@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DimensionalCalculations.Units.MetricPrefixes
 {
-    internal abstract class MultiplicationPrefix : AbstractUnitDecorator
+    public abstract class MultiplicationPrefix : AbstractUnitDecorator
     {
         protected abstract int MultiplicationNumber { get; }
 

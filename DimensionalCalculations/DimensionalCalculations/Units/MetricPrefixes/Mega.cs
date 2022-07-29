@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DimensionalCalculations.Units.MetricPrefixes
 {
-    internal class Mega : MultiplicationPrefix
+    public class Mega : MultiplicationPrefix
     {
         protected override int MultiplicationNumber => 1_000_000;
 
