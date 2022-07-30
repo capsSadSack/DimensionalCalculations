@@ -1,6 +1,6 @@
 ﻿namespace StringParsing.Tests
 {
-    public class Class1
+    public class StringParserTests
     {
 
     }
