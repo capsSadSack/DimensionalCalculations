@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DimensionalCalculations.Units.UnitsLength
+﻿namespace DimensionalCalculations.Units.UnitsLength
 {
     public class Mile : LengthUnit
     {
+        private const double _1_MILE_EQUALS_m = 1609.344;
+
         public override double FromSI(double value)
         {
-            return value / 1609.344;
+            return value / _1_MILE_EQUALS_m;
         }
 
         public override double ToSI(double value)
         {
-            return value * 1609.344;
+            return value * _1_MILE_EQUALS_m;
         }
     }
 }
