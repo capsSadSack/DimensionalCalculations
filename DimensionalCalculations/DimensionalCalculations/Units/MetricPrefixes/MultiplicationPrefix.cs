@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DimensionalCalculations.Units.MetricPrefixes
 {
-    internal abstract class MultiplicationPrefix : AbstractUnitDecorator
+    public abstract class MultiplicationPrefix : AbstractUnitDecorator
     {
-        protected abstract int MultiplicationNumber { get; }
+        protected abstract double MultiplicationNumber { get; }
 
         public MultiplicationPrefix(AbstractUnit instance) : base(instance)
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DimensionalCalculations.Units
 {
-    internal abstract class AbstractUnitDecorator : AbstractUnit
+    public abstract class AbstractUnitDecorator : AbstractUnit
     {
         protected AbstractUnit _instance;
 

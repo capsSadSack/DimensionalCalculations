@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace DimensionalCalculations.Units.MetricPrefixes
 {
-    internal class Kilo : MultiplicationPrefix
+    public class Atto : MultiplicationPrefix
     {
-        protected override int MultiplicationNumber => 1_000;
+        protected override double MultiplicationNumber => 1e-18;
 
 
-        public Kilo(AbstractUnit instance) : base(instance)
+        public Atto(AbstractUnit instance) : base(instance)
         {
         }
     }
