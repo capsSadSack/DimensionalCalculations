@@ -4,7 +4,7 @@ using DimensionalCalculations.Units.UnitsLength;
 
 namespace DimensionalCalculations.Tests
 {
-    public class Tests
+    public class PhysicalQuantityTests
     {
         [SetUp]
         public void Setup()
