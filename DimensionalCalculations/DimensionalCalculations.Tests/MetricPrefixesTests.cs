@@ -13,7 +13,7 @@ namespace DimensionalCalculations.Tests
         public void Deci_CorrectValue()
         {
             AbstractUnit dm = new Deci(new Meter());
-            PhysicalQuantity2 pq = new PhysicalQuantity2(5, dm);
+            PhysicalQuantity pq = new PhysicalQuantity(5, dm);
 
             Assert.AreEqual(0.5, pq.Value, 1e-6);
         }
@@ -22,7 +22,7 @@ namespace DimensionalCalculations.Tests
         public void Centi_CorrectValue()
         {
             AbstractUnit cm = new Centi(new Meter());
-            PhysicalQuantity2 pq = new PhysicalQuantity2(5, cm);
+            PhysicalQuantity pq = new PhysicalQuantity(5, cm);
 
             Assert.AreEqual(5e-2, pq.Value, 1e-6);
         }
@@ -31,7 +31,7 @@ namespace DimensionalCalculations.Tests
         public void Milli_CorrectValue()
         {
             AbstractUnit mm = new Milli(new Meter());
-            PhysicalQuantity2 pq = new PhysicalQuantity2(5, mm);
+            PhysicalQuantity pq = new PhysicalQuantity(5, mm);
 
             Assert.AreEqual(5e-3, pq.Value, 1e-9);
         }
@@ -40,7 +40,7 @@ namespace DimensionalCalculations.Tests
         public void Micro_CorrectValue()
         {
             AbstractUnit um = new Micro(new Meter());
-            PhysicalQuantity2 pq = new PhysicalQuantity2(5, um);
+            PhysicalQuantity pq = new PhysicalQuantity(5, um);
 
             Assert.AreEqual(5e-6, pq.Value, 1e-12);
         }
@@ -49,7 +49,7 @@ namespace DimensionalCalculations.Tests
         public void Nano_CorrectValue()
         {
             AbstractUnit nm = new Nano(new Meter());
-            PhysicalQuantity2 pq = new PhysicalQuantity2(5, nm);
+            PhysicalQuantity pq = new PhysicalQuantity(5, nm);
 
             Assert.AreEqual(5e-9, pq.Value, 1e-12);
         }
@@ -58,7 +58,7 @@ namespace DimensionalCalculations.Tests
         public void Pico_CorrectValue()
         {
             AbstractUnit pm = new Pico(new Meter());
-            PhysicalQuantity2 pq = new PhysicalQuantity2(5, pm);
+            PhysicalQuantity pq = new PhysicalQuantity(5, pm);
 
             Assert.AreEqual(5e-12, pq.Value, 1e-15);
         }
@@ -67,7 +67,7 @@ namespace DimensionalCalculations.Tests
         public void Femto_CorrectValue()
         {
             AbstractUnit pm = new Femto(new Meter());
-            PhysicalQuantity2 pq = new PhysicalQuantity2(5, pm);
+            PhysicalQuantity pq = new PhysicalQuantity(5, pm);
 
             Assert.AreEqual(5e-15, pq.Value, 1e-18);
         }
@@ -76,7 +76,7 @@ namespace DimensionalCalculations.Tests
         public void Atto_CorrectValue()
         {
             AbstractUnit am = new Atto(new Meter());
-            PhysicalQuantity2 pq = new PhysicalQuantity2(5, am);
+            PhysicalQuantity pq = new PhysicalQuantity(5, am);
 
             Assert.AreEqual(5e-18, pq.Value, 1e-21);
         }
@@ -85,7 +85,7 @@ namespace DimensionalCalculations.Tests
         public void Zepto_CorrectValue()
         {
             AbstractUnit zm = new Zepto(new Meter());
-            PhysicalQuantity2 pq = new PhysicalQuantity2(5, zm);
+            PhysicalQuantity pq = new PhysicalQuantity(5, zm);
 
             Assert.AreEqual(5e-21, pq.Value, 1e-24);
         }
@@ -94,7 +94,7 @@ namespace DimensionalCalculations.Tests
         public void Yocto_CorrectValue()
         {
             AbstractUnit ym = new Yocto(new Meter());
-            PhysicalQuantity2 pq = new PhysicalQuantity2(5, ym);
+            PhysicalQuantity pq = new PhysicalQuantity(5, ym);
 
             Assert.AreEqual(5e-24, pq.Value, 1e-27);
         }
@@ -107,7 +107,7 @@ namespace DimensionalCalculations.Tests
         public void Deca_CorrectValue()
         {
             AbstractUnit dam = new Deca(new Meter());
-            PhysicalQuantity2 pq = new PhysicalQuantity2(5, dam);
+            PhysicalQuantity pq = new PhysicalQuantity(5, dam);
 
             Assert.AreEqual(5e1, pq.Value, 1e-3);
         }
@@ -116,7 +116,7 @@ namespace DimensionalCalculations.Tests
         public void Hecto_CorrectValue()
         {
             AbstractUnit hm = new Hecto(new Meter());
-            PhysicalQuantity2 pq = new PhysicalQuantity2(5, hm);
+            PhysicalQuantity pq = new PhysicalQuantity(5, hm);
 
             Assert.AreEqual(5e2, pq.Value, 1e-3);
         }
@@ -125,7 +125,7 @@ namespace DimensionalCalculations.Tests
         public void Kilo_CorrectValue()
         {
             AbstractUnit km = new Kilo(new Meter());
-            PhysicalQuantity2 pq = new PhysicalQuantity2(5, km);
+            PhysicalQuantity pq = new PhysicalQuantity(5, km);
 
             Assert.AreEqual(5e3, pq.Value, 1e-3);
         }
@@ -134,7 +134,7 @@ namespace DimensionalCalculations.Tests
         public void Mega_CorrectValue()
         {
             AbstractUnit Mm = new Mega(new Meter());
-            PhysicalQuantity2 pq = new PhysicalQuantity2(5, Mm);
+            PhysicalQuantity pq = new PhysicalQuantity(5, Mm);
 
             Assert.AreEqual(5e6, pq.Value, 1e-3);
         }
@@ -143,7 +143,7 @@ namespace DimensionalCalculations.Tests
         public void Giga_CorrectValue()
         {
             AbstractUnit Gm = new Giga(new Meter());
-            PhysicalQuantity2 pq = new PhysicalQuantity2(5, Gm);
+            PhysicalQuantity pq = new PhysicalQuantity(5, Gm);
 
             Assert.AreEqual(5e9, pq.Value, 1e-3);
         }
@@ -152,7 +152,7 @@ namespace DimensionalCalculations.Tests
         public void Tera_CorrectValue()
         {
             AbstractUnit Tm = new Tera(new Meter());
-            PhysicalQuantity2 pq = new PhysicalQuantity2(5, Tm);
+            PhysicalQuantity pq = new PhysicalQuantity(5, Tm);
 
             Assert.AreEqual(5e12, pq.Value, 1e-3);
         }
@@ -161,7 +161,7 @@ namespace DimensionalCalculations.Tests
         public void Peta_CorrectValue()
         {
             AbstractUnit Pm = new Peta(new Meter());
-            PhysicalQuantity2 pq = new PhysicalQuantity2(5, Pm);
+            PhysicalQuantity pq = new PhysicalQuantity(5, Pm);
 
             Assert.AreEqual(5e15, pq.Value, 1);
         }
@@ -170,7 +170,7 @@ namespace DimensionalCalculations.Tests
         public void Exa_CorrectValue()
         {
             AbstractUnit Em = new Exa(new Meter());
-            PhysicalQuantity2 pq = new PhysicalQuantity2(5, Em);
+            PhysicalQuantity pq = new PhysicalQuantity(5, Em);
 
             Assert.AreEqual(5e18, pq.Value, 1e3);
         }
@@ -179,7 +179,7 @@ namespace DimensionalCalculations.Tests
         public void Zetta_CorrectValue()
         {
             AbstractUnit Zm = new Zetta(new Meter());
-            PhysicalQuantity2 pq = new PhysicalQuantity2(5, Zm);
+            PhysicalQuantity pq = new PhysicalQuantity(5, Zm);
 
             Assert.AreEqual(5e21, pq.Value, 1e6);
         }
@@ -188,7 +188,7 @@ namespace DimensionalCalculations.Tests
         public void Yotta_CorrectValue()
         {
             AbstractUnit Ym = new Yotta(new Meter());
-            PhysicalQuantity2 pq = new PhysicalQuantity2(5, Ym);
+            PhysicalQuantity pq = new PhysicalQuantity(5, Ym);
 
             Assert.AreEqual(5e24, pq.Value, 1e10);
         }
