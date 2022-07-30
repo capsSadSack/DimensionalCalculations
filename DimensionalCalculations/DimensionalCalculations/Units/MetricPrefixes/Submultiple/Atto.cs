@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace DimensionalCalculations.Units.MetricPrefixes
 {
-    public class Mega : MultiplicationPrefix
+    public class Atto : MultiplicationPrefix
     {
-        protected override int MultiplicationNumber => 1_000_000;
+        protected override double MultiplicationNumber => 1e-18;
 
 
-        public Mega(AbstractUnit instance) : base(instance)
+        public Atto(AbstractUnit instance) : base(instance)
         {
         }
     }

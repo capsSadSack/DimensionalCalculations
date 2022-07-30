@@ -8,7 +8,7 @@ namespace DimensionalCalculations.Units.MetricPrefixes
 {
     public abstract class MultiplicationPrefix : AbstractUnitDecorator
     {
-        protected abstract int MultiplicationNumber { get; }
+        protected abstract double MultiplicationNumber { get; }
 
         public MultiplicationPrefix(AbstractUnit instance) : base(instance)
         {
