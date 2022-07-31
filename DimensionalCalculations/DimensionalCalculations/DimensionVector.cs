@@ -33,14 +33,14 @@ namespace DimensionalCalculations
             get { return _dimArray[4]; }
             set { _dimArray[4] = value; }
         }
-
-        public int Candela
+        
+        public int LuminousIntensity
         {
             get { return _dimArray[5]; }
             set { _dimArray[5] = value; }
         }
 
-        public int Mole
+        public int AmountOfSubstance
         {
             get { return _dimArray[6]; }
             set { _dimArray[6] = value; }
@@ -65,8 +65,8 @@ namespace DimensionalCalculations
                 Time = a.Time + b.Time,
                 Temperature = a.Temperature + b.Temperature,
                 Current = a.Current + b.Current,
-                Candela = a.Candela + b.Candela,
-                Mole = a.Mole + b.Mole
+                LuminousIntensity = a.LuminousIntensity + b.LuminousIntensity,
+                AmountOfSubstance = a.AmountOfSubstance + b.AmountOfSubstance
             };
         }
 
@@ -79,8 +79,8 @@ namespace DimensionalCalculations
                 Time = -a.Time,
                 Temperature = -a.Temperature,
                 Current = -a.Current,
-                Candela = -a.Candela,
-                Mole = -a.Mole
+                LuminousIntensity = -a.LuminousIntensity,
+                AmountOfSubstance = -a.AmountOfSubstance
             };
         }
 
@@ -91,11 +91,11 @@ namespace DimensionalCalculations
 
         public static bool operator ==(DimensionVector dv1, DimensionVector dv2)
         {
-            return dv1.Candela == dv2.Candela
+            return dv1.LuminousIntensity == dv2.LuminousIntensity
                 && dv1.Current == dv2.Current
                 && dv1.Length == dv2.Length
                 && dv1.Mass == dv2.Mass
-                && dv1.Mole == dv2.Mole
+                && dv1.AmountOfSubstance == dv2.AmountOfSubstance
                 && dv1.Time == dv2.Time
                 && dv1.Temperature == dv2.Temperature;
         }
@@ -105,11 +105,11 @@ namespace DimensionalCalculations
 
         public bool IsDimensionless()
         {
-            return Candela == 0
+            return LuminousIntensity == 0
                 && Current == 0
                 && Length == 0
                 && Mass == 0
-                && Mole == 0
+                && AmountOfSubstance == 0
                 && Time == 0
                 && Temperature == 0;
         }
