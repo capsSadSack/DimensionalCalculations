@@ -11,8 +11,8 @@ namespace MathEquationParsing
             Split(str, out string numberStr, out string unitStr);
 
             double value = Convert.ToDouble(numberStr);
-
-            return new PhysicalQuantity(value, new DimensionVector());
+            AbstractUnit unit = ParseUnit(unitStr);
+            return new PhysicalQuantity(value, unit);
         }
 
         private static void Split(string str, out string numberStr, out string unitStr)
@@ -51,6 +51,20 @@ namespace MathEquationParsing
                     throw new PhysicalQuantityParsingException();
                 }
             }
+        }
+
+        private static AbstractUnit ParseUnit(string str)
+        {
+            // TODO: [CG, 2022.08.02] Предусмотреть деление
+
+            //string[] parts = str.Trim(' ').Split(' ');
+
+            //if(parts.Length > 0)
+            //{
+
+            //}
+
+            return Units.GetUnit(str);
         }
 
         #region Checkings

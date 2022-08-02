@@ -5,7 +5,7 @@ namespace DimensionalCalculations
 {
     public abstract class AbstractUnit
     {
-        public DimensionVector Dimension { get; protected set; }
+        public virtual DimensionVector Dimension { get; set; }
 
         public abstract double ToSI(double value);
 
