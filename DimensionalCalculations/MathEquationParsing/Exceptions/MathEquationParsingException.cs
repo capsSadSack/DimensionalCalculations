@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MathEquationParsing.Exceptions
+﻿namespace MathEquationParsing.Exceptions
 {
-    internal class MathEquationParsingException
+    public class MathEquationParsingException : Exception
     {
+        public MathEquationParsingException() : base()
+        {
+
+        }
+
+        public MathEquationParsingException(string message) : base(message)
+        {
+
+        }
     }
 }
