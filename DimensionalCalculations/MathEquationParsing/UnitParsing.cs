@@ -89,20 +89,32 @@ namespace MathEquationParsing
                 return new DimensionlessUnit();
             }
 
-            string[] parts = str.Split(' ')
-                .Where(x => x.Length > 0)
-                .ToArray();
-            AbstractUnit output = new DimensionlessUnit();
-
-            foreach (string part in parts)
+            if (!str.Contains('/'))
             {
-                AbstractUnit unit = ParseSingleUnit(part);
+                string[] parts = str.Split(' ')
+                    .Where(x => x.Length > 0)
+                    .ToArray();
+                AbstractUnit output = new DimensionlessUnit();
 
-                // TODO: [CG, 2022.08.02] Заглушка, чтобы проходили тесты в простейшем варианте
-                output = unit;
+                foreach (string part in parts)
+                {
+                    AbstractUnit unit = ParseSingleUnit(part);
+                    output *= unit;
+                }
+
+                return output;
             }
+            else
+            {
+                string[] fractionParts = str.Split('/')
+                    .Where(x => x.Length > 0)
+                    .ToArray();
 
-            return output;
+                AbstractUnit dividend = GetUnit(fractionParts[0]);
+                AbstractUnit divisor = GetUnit(fractionParts[1]);
+
+                return dividend / divisor;
+            }
         }
 
         private static AbstractUnit ParseSingleUnit(string str)
