@@ -64,7 +64,7 @@ namespace MathEquationParsing
 
             //}
 
-            return Units.GetUnit(str);
+            return UnitParsing.GetUnit(str);
         }
 
         #region Checkings

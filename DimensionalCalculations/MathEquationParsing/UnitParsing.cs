@@ -13,11 +13,12 @@ using DimensionalCalculations.Units.UnitsLuminousIntensity;
 using DimensionalCalculations.Units.UnitsMass;
 using DimensionalCalculations.Units.UnitsTemperature;
 using DimensionalCalculations.Units.UnitsTime;
+using MathEquationParsing.Exceptions;
 using MathEquationParsing.Models;
 
 namespace MathEquationParsing
 {
-    internal static class Units
+    public static class UnitParsing
     {
         private static Dictionary<AbstractUnit, string[]> _unitsDict =
             new Dictionary<AbstractUnit, string[]>()
@@ -132,8 +133,7 @@ namespace MathEquationParsing
                 }
             }
 
-            // TODO: [CG, 2022.08.02] Конкретизировать exception
-            throw new Exception();
+            throw new IncorrectUnitException($"Unable to parse string \"{ str }\" to unit.");
         }
 
         private static AbstractUnit GetAbstractUnit(string unitAbbrevation)
