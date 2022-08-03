@@ -89,6 +89,11 @@ namespace MathEquationParsing
                 return new DimensionlessUnit();
             }
 
+            if(str.Contains('+') || str.Contains('-'))
+            {
+                throw new IncorrectUnitException($"Incorrect unit string: \"{ str }\".");
+            }
+
             if (!str.Contains('/'))
             {
                 string[] parts = str.Split(' ')
@@ -160,8 +165,7 @@ namespace MathEquationParsing
                 }
             }
 
-            // TODO: [CG, 2022.08.02] Конкретизировать exception
-            throw new Exception();
+            throw new IncorrectUnitException();
         }
 
 

@@ -7,10 +7,10 @@ namespace MathEquationParsing.Tests
 {
     internal class UnitParsingTests
     {
-        [Test]
-        public void IncorrectUnit_GetUnit_Exception()
+        [TestCase("Kg")]
+        [TestCase("kg + s")]
+        public void IncorrectUnit_GetUnit_Exception(string incorrectUnitSrt)
         {
-            string incorrectUnitSrt = "Kg";
             Assert.Throws<IncorrectUnitException>(() =>
             {
                 UnitParsing.GetUnit(incorrectUnitSrt);
@@ -56,6 +56,17 @@ namespace MathEquationParsing.Tests
         }
 
         [Test]
+        public void DividedMultiplicatedUnitStr_GetUnit_CorrectDimension()
+        {
+            string incorrectUnitSrt = "kg m/s";
+            AbstractUnit result = UnitParsing.GetUnit(incorrectUnitSrt);
+
+            Assert.AreEqual(1, result.Dimension.Mass);
+            Assert.AreEqual(1, result.Dimension.Length);
+            Assert.AreEqual(-1, result.Dimension.Time);
+        }
+
+        [Test]
         public void TwiceDividedUnitStr_GetUnit_CorrectDimension()
         {
             string incorrectUnitSrt = "kg/s/s";
@@ -66,7 +77,7 @@ namespace MathEquationParsing.Tests
         }
 
         [Test]
-        public void BracedDividedUnitStr_GetUnit_CorrectDimension()
+        public void BracketDividedUnitStr_GetUnit_CorrectDimension()
         {
             string incorrectUnitSrt = "kg/(m/s)";
             AbstractUnit result = UnitParsing.GetUnit(incorrectUnitSrt);
