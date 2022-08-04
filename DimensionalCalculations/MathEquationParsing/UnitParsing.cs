@@ -111,15 +111,29 @@ namespace MathEquationParsing
             }
             else
             {
-                string[] fractionParts = str.Split('/')
-                    .Where(x => x.Length > 0)
-                    .ToArray();
+                SplitByLastChar(str, '/', out string left, out string right);
 
-                AbstractUnit dividend = GetUnit(fractionParts[0]);
-                AbstractUnit divisor = GetUnit(fractionParts[1]);
+                AbstractUnit dividend = GetUnit(left);
+                AbstractUnit divisor = GetUnit(right);
 
                 return dividend / divisor;
             }
+        }
+
+        private static void SplitByLastChar(string str, char ch, out string left, out string right)
+        {
+            for(int i = str.Length - 1; i >= 0 ; i--)
+            {
+                if(str[i] == ch)
+                {
+                    left = str.Substring(0, i);
+                    right = str.Substring(i + 1);
+
+                    return;
+                }
+            }
+
+            throw new Exception($"Char '{ ch }' was not found in string.");
         }
 
         private static AbstractUnit ParseSingleUnit(string str)
