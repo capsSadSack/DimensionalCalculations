@@ -77,6 +77,17 @@ namespace MathEquationParsing.Tests
         }
 
         [Test]
+        public void MultiplicationOfTwoDividedUnitsStr_GetUnit_CorrectDimension()
+        {
+            string incorrectUnitSrt = "kg/s m/s";
+            AbstractUnit result = UnitParsing.GetUnit(incorrectUnitSrt);
+
+            Assert.AreEqual(1, result.Dimension.Mass);
+            Assert.AreEqual(1, result.Dimension.Length);
+            Assert.AreEqual(-2, result.Dimension.Time);
+        }
+
+        [Test]
         public void BracketDividedUnitStr_GetUnit_CorrectDimension()
         {
             string incorrectUnitSrt = "kg/(m s)";

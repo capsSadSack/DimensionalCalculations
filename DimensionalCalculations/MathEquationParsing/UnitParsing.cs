@@ -111,14 +111,32 @@ namespace MathEquationParsing
             }
             else
             {
-                SplitByLastChar(str, '/', out string left, out string right);
 
-                AbstractUnit dividend = GetUnit(left);
-                AbstractUnit divisor = GetUnit(right);
+                    SplitByLastChar(str, '/', out string left, out string right);
 
-                return dividend / divisor;
+                    AbstractUnit dividend = GetUnit(left);
+                    AbstractUnit divisor = GetUnit(right);
+
+                    return dividend / divisor;
             }
         }
+
+        private static string Simplify(string str)
+        {
+            if (!str.Contains('(') && !str.Contains(')') &&
+                !str.Contains('[') && !str.Contains(']') &&
+                !str.Contains('{') && !str.Contains('}'))
+            {
+                string output = String.Empty;
+
+
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
 
         private static void SplitByLastChar(string str, char ch, out string left, out string right)
         {
