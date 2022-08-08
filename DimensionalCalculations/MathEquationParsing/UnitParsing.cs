@@ -94,49 +94,146 @@ namespace MathEquationParsing
                 throw new IncorrectUnitException($"Incorrect unit string: \"{ str }\".");
             }
 
-            if (!str.Contains('/'))
-            {
-                string[] parts = str.Split(' ')
+            string simplifiedStr = Simplify(str);
+
+            string[] parts = simplifiedStr.Split(' ')
                     .Where(x => x.Length > 0)
                     .ToArray();
-                AbstractUnit output = new DimensionlessUnit();
+            AbstractUnit output = new DimensionlessUnit();
 
-                foreach (string part in parts)
-                {
-                    AbstractUnit unit = ParseSingleUnit(part);
-                    output *= unit;
-                }
-
-                return output;
-            }
-            else
+            foreach(var part in parts)
             {
+                GetUnitAndPower(part, out string unitStr, out int power);
 
-                    SplitByLastChar(str, '/', out string left, out string right);
-
-                    AbstractUnit dividend = GetUnit(left);
-                    AbstractUnit divisor = GetUnit(right);
-
-                    return dividend / divisor;
+                for (int i = 0; i < Math.Abs(power); i++)
+                {
+                    AbstractUnit unit = ParseSingleUnit(unitStr);
+                    if(power > 0)
+                    {
+                        output *= unit;
+                    }
+                    else if (power < 0)
+                    {
+                        output /= unit;
+                    }
+                }
             }
+
+            return output;
         }
 
         private static string Simplify(string str)
         {
-            if (!str.Contains('(') && !str.Contains(')') &&
-                !str.Contains('[') && !str.Contains(']') &&
-                !str.Contains('{') && !str.Contains('}'))
+            str = str.Trim(' ');
+
+            if(str == "1")
             {
-                string output = String.Empty;
+                return "";
+            }
 
+            if (str.Contains('/'))
+            {
+                SplitByLastChar(str, '/', out string left, out string right);
 
+                string simpleLeft = Simplify(left);
+                string simpleRight = Inverse(Simplify(right));
+
+                string allStr = simpleLeft + " " + simpleRight;
+                return SimplifyPowers(allStr);
             }
             else
             {
-                throw new NotImplementedException();
+                return SimplifyPowers(str);
             }
         }
 
+        private static string SimplifyPowers(string str)
+        {
+            Dictionary<string, int> units = new Dictionary<string, int>();
+            string[] parts = str.Replace("  ", " ").Split(' ');
+
+            foreach (string part in parts)
+            {
+                GetUnitAndPower(part, out string unit, out int power);
+
+                if (!units.ContainsKey(unit))
+                {
+                    units.Add(unit, 0);
+                }
+
+                int prevPower = units[unit];
+                units[unit] = prevPower + power;
+            }
+
+            string output = string.Empty;
+            foreach (var item in units)
+            {
+                if (item.Value != 0)
+                {
+                    output += FromUnitAndPower(item.Key, item.Value) + " ";
+                }
+            }
+
+            return output;
+        }
+
+        private static string Inverse(string str)
+        {
+            str = str.Trim(' ');
+
+            if (str.Contains('/'))
+            {
+                throw new Exception();
+            }
+
+            string[] parts = str.Split(' ');
+
+            Dictionary<string, int> units = new Dictionary<string, int>();
+            foreach(string part in parts)
+            {
+                GetUnitAndPower(part, out string unit, out int power);
+
+                if(!units.ContainsKey(unit))
+                {
+                    units.Add(unit, 0);
+                }
+
+                int prevPower = units[unit];
+                units[unit] = prevPower + power;
+            }
+
+            string output = string.Empty;
+            foreach(var item in units)
+            {
+                output += FromUnitAndPower(item.Key, -item.Value);
+            }
+
+            return output;
+        }
+
+        private static string FromUnitAndPower(string unit, int power)
+        {
+            string str = $"{ unit }^({ power })";
+            return str;
+        }
+
+        private static void GetUnitAndPower(string unitWithPowerStr, out string unit, out int power)
+        {
+            string str = unitWithPowerStr.Replace(" ", "");
+
+            if(str.Contains('^'))
+            {
+                string[] parts = str.Split('^');
+
+                unit = parts[0];
+                power = Convert.ToInt32(parts[1].Trim('(').Trim(')'));
+            }
+            else
+            {
+                unit = str;
+                power = 1;
+            }
+        }
 
         private static void SplitByLastChar(string str, char ch, out string left, out string right)
         {

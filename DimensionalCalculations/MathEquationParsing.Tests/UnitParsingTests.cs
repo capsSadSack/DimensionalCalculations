@@ -97,5 +97,33 @@ namespace MathEquationParsing.Tests
             Assert.AreEqual(1, result.Dimension.Time);
             Assert.AreEqual(-1, result.Dimension.Length);
         }
+
+        [Test]
+        public void PowerUnitStr_GetUnit_CorrectDimension()
+        {
+            string incorrectUnitSrt = "kg^2";
+            AbstractUnit result = UnitParsing.GetUnit(incorrectUnitSrt);
+
+            Assert.AreEqual(2, result.Dimension.Mass);
+        }
+
+        [Test]
+        public void DividedByPowerUnitStr_GetUnit_CorrectDimension()
+        {
+            string incorrectUnitSrt = "m / s^2";
+            AbstractUnit result = UnitParsing.GetUnit(incorrectUnitSrt);
+
+            Assert.AreEqual(1, result.Dimension.Length);
+            Assert.AreEqual(-2, result.Dimension.Time);
+        }
+
+        [Test]
+        public void OneInUnitStr_GetUnit_CorrectDimension()
+        {
+            string incorrectUnitSrt = "1 / s^2";
+            AbstractUnit result = UnitParsing.GetUnit(incorrectUnitSrt);
+
+            Assert.AreEqual(-2, result.Dimension.Time);
+        }
     }
 }
