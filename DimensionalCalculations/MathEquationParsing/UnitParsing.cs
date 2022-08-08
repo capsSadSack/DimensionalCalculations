@@ -133,10 +133,11 @@ namespace MathEquationParsing
 
             if (str.Contains('/'))
             {
-                SplitByLastChar(str, '/', out string left, out string right);
+                string str1 = MinimizeDivisionSigns(str);
+                SplitByLastChar(str1, '/', out string left, out string right);
 
                 string simpleLeft = Simplify(left);
-                string simpleRight = Inverse(Simplify(right));
+                string simpleRight = InversePowers(Simplify(right));
 
                 string allStr = simpleLeft + " " + simpleRight;
                 return SimplifyPowers(allStr);
@@ -145,6 +146,39 @@ namespace MathEquationParsing
             {
                 return SimplifyPowers(str);
             }
+        }
+
+        private static string MinimizeDivisionSigns(string str)
+        {
+            if (str.Contains('/'))
+            {
+                string dividend = "";
+                string divisor = "";
+
+                string[] parts = str.Split('/');
+
+                dividend += parts[0] + ' ';
+              
+                for (int i = 1; i < parts.Count(); i++)
+                {
+                    // TODO: [CG, 2022.08.08] Проверять скобочки
+
+                    string[] partsParts = parts[i]
+                        .Split(' ', '*')
+                        .Where(x => x.Length > 0)
+                        .ToArray();
+                    divisor += partsParts[0] + ' ';
+
+                    for (int j = 1; j < partsParts.Count(); j++)
+                    {
+                        dividend += partsParts[j] + ' ';
+                    }
+                }
+
+                return dividend + '/' + divisor;
+            }
+
+            return str;
         }
 
         private static string SimplifyPowers(string str)
@@ -177,7 +211,7 @@ namespace MathEquationParsing
             return output;
         }
 
-        private static string Inverse(string str)
+        private static string InversePowers(string str)
         {
             str = str.Trim(' ');
 
