@@ -10,6 +10,18 @@ namespace DimensionalCalculations.Units
     {
         protected AbstractUnit _instance;
 
+        public override DimensionVector Dimension
+        {
+            get
+            {
+                return _instance.Dimension;
+            }
+            set
+            {
+                _instance.Dimension = value;
+            }
+        }
+
         public AbstractUnitDecorator(AbstractUnit instance)
         {
             _instance = instance;
