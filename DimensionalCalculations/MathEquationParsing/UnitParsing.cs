@@ -133,11 +133,10 @@ namespace MathEquationParsing
 
             if (str.Contains('/'))
             {
-                string str1 = MinimizeDivisionSigns(str);
-                SplitByLastChar(str1, '/', out string left, out string right);
+                MinimizeDivisionSigns(str, out string dividend, out string divisor);
 
-                string simpleLeft = Simplify(left);
-                string simpleRight = InversePowers(Simplify(right));
+                string simpleLeft = Simplify(dividend);
+                string simpleRight = InversePowers(Simplify(divisor));
 
                 string allStr = (simpleLeft + " " + simpleRight).Trim(' ');
                 return SimplifyPowers(allStr);
@@ -148,24 +147,23 @@ namespace MathEquationParsing
             }
         }
 
-        private static string MinimizeDivisionSigns(string str)
+        private static void MinimizeDivisionSigns(string str, out string dividend, out string divisor)
         {
+            dividend = "";
+            divisor = "";
+
             if (str.Contains('/'))
             {
-                string dividend = "";
-                string divisor = "";
-
                 string[] parts = str
                     .Split('/')
                     .Select(x => x.Trim(' '))
                     .Where(x => x.Length > 0)
                     .ToArray();
 
-                dividend += parts[0] + ' ';
+                dividend += RemoveBrackets(parts[0]) + ' ';
               
                 for (int i = 1; i < parts.Count(); i++)
                 {
-                    // TODO: [CG, 2022.08.08] Проверять скобочки
                     string firstStr = string.Empty;
                     string remainsStr = string.Empty;
 
@@ -199,13 +197,24 @@ namespace MathEquationParsing
                         dividend += remainsParts[j] + ' ';
                     }
                 }
-
-                //string div = InversePowers(divisor);
-                string output = dividend + '/' + divisor;
-                return output;
             }
+            else
+            {
+                dividend = str;
+                divisor = "";
+            }
+        }
 
-            return str;
+        private static string RemoveBrackets(string str)
+        {
+            return str
+                .Replace("(", " ")
+                .Replace(")", " ")
+                .Replace("{", " ")
+                .Replace("}", " ")
+                .Replace("[", " ")
+                .Replace("]", " ")
+                .Replace("  ", " ");
         }
 
         private static void CutFirstBracket(string str, out string insideBracketsStr, out string remainsStr)

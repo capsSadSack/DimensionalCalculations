@@ -7,6 +7,8 @@ namespace MathEquationParsing.Tests
 {
     internal class UnitParsingTests
     {
+        // Will fail with this str: "((kg mol) (mol))/(m s)";
+
         [TestCase("Kg")]
         [TestCase("kg + s")]
         public void IncorrectUnit_GetUnit_Exception(string incorrectUnitSrt)
@@ -99,7 +101,7 @@ namespace MathEquationParsing.Tests
         }
 
         [Test]
-        public void BracketDividedUnittWIC3Str_GetUnit_CorrectDimension()
+        public void BracketDividedUnitTwiceStr_GetUnit_CorrectDimension()
         {
             string incorrectUnitSrt = "kg/(m s)/m^2";
             AbstractUnit result = UnitParsing.GetUnit(incorrectUnitSrt);
@@ -107,6 +109,30 @@ namespace MathEquationParsing.Tests
             Assert.AreEqual(1, result.Dimension.Mass);
             Assert.AreEqual(-1, result.Dimension.Time);
             Assert.AreEqual(-3, result.Dimension.Length);
+        }
+
+        [Test]
+        public void BothDividendAndDivisorAreInBracketStr_GetUnit_CorrectDimension()
+        {
+            string incorrectUnitSrt = "(kg mol)/(m s)";
+            AbstractUnit result = UnitParsing.GetUnit(incorrectUnitSrt);
+
+            Assert.AreEqual(1, result.Dimension.Mass);
+            Assert.AreEqual(1, result.Dimension.AmountOfSubstance);
+            Assert.AreEqual(-1, result.Dimension.Time);
+            Assert.AreEqual(-1, result.Dimension.Length);
+        }
+
+        [Test]
+        public void UselessBracketStr_GetUnit_CorrectDimension()
+        {
+            string incorrectUnitSrt = "((kg mol) (mol))/(m s)";
+            AbstractUnit result = UnitParsing.GetUnit(incorrectUnitSrt);
+
+            Assert.AreEqual(1, result.Dimension.Mass);
+            Assert.AreEqual(2, result.Dimension.AmountOfSubstance);
+            Assert.AreEqual(-1, result.Dimension.Time);
+            Assert.AreEqual(-1, result.Dimension.Length);
         }
 
         [Test]
