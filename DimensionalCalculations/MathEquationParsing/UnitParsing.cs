@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -139,7 +139,7 @@ namespace MathEquationParsing
                 string simpleLeft = Simplify(left);
                 string simpleRight = InversePowers(Simplify(right));
 
-                string allStr = simpleLeft + " " + simpleRight;
+                string allStr = (simpleLeft + " " + simpleRight).Trim(' ');
                 return SimplifyPowers(allStr);
             }
             else
@@ -155,30 +155,90 @@ namespace MathEquationParsing
                 string dividend = "";
                 string divisor = "";
 
-                string[] parts = str.Split('/');
+                string[] parts = str
+                    .Split('/')
+                    .Select(x => x.Trim(' '))
+                    .Where(x => x.Length > 0)
+                    .ToArray();
 
                 dividend += parts[0] + ' ';
               
                 for (int i = 1; i < parts.Count(); i++)
                 {
                     // TODO: [CG, 2022.08.08] Проверять скобочки
+                    string firstStr = string.Empty;
+                    string remainsStr = string.Empty;
 
-                    string[] partsParts = parts[i]
+                    if (parts[i].Contains('(') && parts[i].Contains(' ') && parts[i].IndexOf('(') < parts[i].IndexOf(' '))
+                    {
+                        CutFirstBracket(parts[i], out firstStr, out remainsStr);
+                    }
+                    else
+                    {
+                        string[] partsParts = parts[i]
+                            .Split(' ', '*')
+                            .Select(x => x.Trim(' '))
+                            .Where(x => x.Length > 0)
+                            .ToArray();
+
+                        firstStr = partsParts[0];
+                        remainsStr = parts[i].Substring(firstStr.Length).Trim(' ');
+                    }
+
+
+                    divisor += firstStr + ' ';
+
+                    string[] remainsParts = remainsStr
                         .Split(' ', '*')
+                        .Select(x => x.Trim(' '))
                         .Where(x => x.Length > 0)
                         .ToArray();
-                    divisor += partsParts[0] + ' ';
 
-                    for (int j = 1; j < partsParts.Count(); j++)
+                    for (int j = 0; j < remainsParts.Count(); j++)
                     {
-                        dividend += partsParts[j] + ' ';
+                        dividend += remainsParts[j] + ' ';
                     }
                 }
 
-                return dividend + '/' + divisor;
+                //string div = InversePowers(divisor);
+                string output = dividend + '/' + divisor;
+                return output;
             }
 
             return str;
+        }
+
+        private static void CutFirstBracket(string str, out string insideBracketsStr, out string remainsStr)
+        {
+            int? openIndex = null;
+            int? closeIndex = null;
+
+            for(int i = 0; i < str.Count(); i++)
+            {
+                if(str[i] == '(')
+                {
+                    openIndex = i;
+
+                    if(openIndex != 0)
+                    {
+                        throw new Exception();
+                    }
+                }
+
+                if(str[i] == ')')
+                {
+                    closeIndex = i;
+                }
+
+                if(openIndex != null && closeIndex != null)
+                {
+                    insideBracketsStr = str.Substring((int)openIndex + 1, (int)closeIndex - (int)openIndex - 1);
+                    remainsStr = str.Substring((int)closeIndex + 1);
+                    return;
+                }
+            }
+
+            throw new Exception();
         }
 
         private static string SimplifyPowers(string str)
@@ -239,7 +299,7 @@ namespace MathEquationParsing
             string output = string.Empty;
             foreach(var item in units)
             {
-                output += FromUnitAndPower(item.Key, -item.Value);
+                output += FromUnitAndPower(item.Key, -item.Value) + " ";
             }
 
             return output;
@@ -271,6 +331,13 @@ namespace MathEquationParsing
 
         private static void SplitByLastChar(string str, char ch, out string left, out string right)
         {
+            if(!str.Contains(ch))
+            {
+                left = str;
+                right = "";
+                return;
+            }
+
             for(int i = str.Length - 1; i >= 0 ; i--)
             {
                 if(str[i] == ch)

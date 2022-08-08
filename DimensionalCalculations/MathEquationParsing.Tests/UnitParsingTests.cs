@@ -94,8 +94,19 @@ namespace MathEquationParsing.Tests
             AbstractUnit result = UnitParsing.GetUnit(incorrectUnitSrt);
 
             Assert.AreEqual(1, result.Dimension.Mass);
-            Assert.AreEqual(1, result.Dimension.Time);
+            Assert.AreEqual(-1, result.Dimension.Time);
             Assert.AreEqual(-1, result.Dimension.Length);
+        }
+
+        [Test]
+        public void BracketDividedUnittWIC3Str_GetUnit_CorrectDimension()
+        {
+            string incorrectUnitSrt = "kg/(m s)/m^2";
+            AbstractUnit result = UnitParsing.GetUnit(incorrectUnitSrt);
+
+            Assert.AreEqual(1, result.Dimension.Mass);
+            Assert.AreEqual(-1, result.Dimension.Time);
+            Assert.AreEqual(-3, result.Dimension.Length);
         }
 
         [Test]
