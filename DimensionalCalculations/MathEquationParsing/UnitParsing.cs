@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,8 +17,13 @@ using DimensionalCalculations.Units.UnitsTime;
 using MathEquationParsing.Exceptions;
 using MathEquationParsing.Models;
 
+[assembly: InternalsVisibleTo("MathEquationParsing.Tests")]
+
 namespace MathEquationParsing
 {
+    // NOTE: [CG, 2022.08.10] Brackets problems:
+    // - unable to parse barckets in brackets, etc.
+    // -
     public static class UnitParsing
     {
         private static Dictionary<AbstractUnit, string[]> _unitsDict =
@@ -147,6 +153,22 @@ namespace MathEquationParsing
             }
         }
 
+        internal static void CutInnerBrackets()
+        {
+
+        }
+
+        internal static void CheckBrackets(string str)
+        {
+
+        }
+
+        /// <summary>
+        /// Split complex equation into single fraction with dividend and divisor
+        /// </summary>
+        /// <param name="str">Math equation string</param>
+        /// <param name="dividend">Result dividend</param>
+        /// <param name="divisor">Result divisor</param>
         private static void MinimizeDivisionSigns(string str, out string dividend, out string divisor)
         {
             dividend = "";
@@ -250,6 +272,11 @@ namespace MathEquationParsing
             throw new Exception();
         }
 
+        /// <summary>
+        /// Find same units and simplify their powers
+        /// </summary>
+        /// <param name="str">Units string</param>
+        /// <returns>Units string with unique units with powers</returns>
         private static string SimplifyPowers(string str)
         {
             Dictionary<string, int> units = new Dictionary<string, int>();
