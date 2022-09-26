@@ -7,9 +7,6 @@ namespace MathEquationParsing.Tests
 {
     internal class UnitParsingTests
     {
-
-
-
         [TestCase("Kg")]
         [TestCase("kg + s")]
         public void IncorrectUnit_GetUnit_Exception(string incorrectUnitSrt)

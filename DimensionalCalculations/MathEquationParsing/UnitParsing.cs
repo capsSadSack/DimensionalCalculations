@@ -130,27 +130,41 @@ namespace MathEquationParsing
 
         private static string Simplify(string str)
         {
-            str = str.Trim(' ');
-
-            if(str == "1")
+            if (HasComplexBrackets(str))
             {
-                return "";
-            }
-
-            if (str.Contains('/'))
-            {
-                MinimizeDivisionSigns(str, out string dividend, out string divisor);
-
-                string simpleLeft = Simplify(dividend);
-                string simpleRight = InversePowers(Simplify(divisor));
-
-                string allStr = (simpleLeft + " " + simpleRight).Trim(' ');
-                return SimplifyPowers(allStr);
+                // TODO: [CG, 2022.09.26] Stub
+                return str;
             }
             else
             {
-                return SimplifyPowers(str);
+                str = str.Trim(' ');
+
+                if (str == "1")
+                {
+                    return "";
+                }
+
+                if (str.Contains('/'))
+                {
+                    MinimizeDivisionSigns(str, out string dividend, out string divisor);
+
+                    string simpleLeft = Simplify(dividend);
+                    string simpleRight = InversePowers(Simplify(divisor));
+
+                    string allStr = (simpleLeft + " " + simpleRight).Trim(' ');
+                    return SimplifyPowers(allStr);
+                }
+                else
+                {
+                    return SimplifyPowers(str);
+                }
             }
+        }
+
+        public static bool HasComplexBrackets(string str)
+        {
+            // TODO: [CG, 2022.09.26] Stub
+            return false;
         }
 
         internal static void CutInnerBrackets()

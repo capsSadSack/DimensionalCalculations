@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MathEquationParsing.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MathEquationParsing
 {
-    public static class BracketsChecking
+    public static class BracketsParsing
     {
         private class Stack
         {
@@ -108,6 +109,34 @@ namespace MathEquationParsing
             {
                 // not balanced
                 return false;
+            }
+        }
+
+        public static bool ContainsOnlyPowerBrackets(string str)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool IsPhysQuantity(string str)
+        {
+            string[] parts = str.Trim(' ').Split(' ');
+
+            throw new NotImplementedException();
+        } 
+
+        public static string CutInnerBrackets(string str, 
+            out string remainsLeftStr, out string remainsRightStr)
+        {
+            remainsLeftStr = String.Empty;
+            remainsRightStr = String.Empty;
+
+            if (CheckBrackets(str))
+            {
+                throw new NotImplementedException();
+            }
+            else
+            {
+                throw new IncorrectBracketsException();
             }
         }
     }
