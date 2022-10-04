@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,72 +17,15 @@ using DimensionalCalculations.Units.UnitsTime;
 using MathEquationParsing.Exceptions;
 using MathEquationParsing.Models;
 
+[assembly: InternalsVisibleTo("MathEquationParsing.Tests")]
+
 namespace MathEquationParsing
 {
+    // NOTE: [CG, 2022.08.10] Brackets problems:
+    // - unable to parse brackets in brackets, etc.
+    // -
     public static class UnitParsing
     {
-        private static Dictionary<AbstractUnit, string[]> _unitsDict =
-            new Dictionary<AbstractUnit, string[]>()
-        {
-                #region Base units
-
-                #region Amount of substance
-
-                { new Mole(), new string[]{ "mol", "моль" } },
-
-                #endregion
-
-                #region Current
-
-                { new Ampere(), new string[]{ "A", "А" } },
-
-                #endregion
-
-                #region Length
-
-                { new Meter(), new string[]{ "m", "м" } },
-                { new Mile(), new string[]{ "mi", "миля" } },
-
-                #endregion
-
-                #region Luminous intensity
-
-                { new Candela(), new string[]{ "cd", "кд" } },
-
-                #endregion
-
-                #region Mass
-
-                { new Carat(), new string[]{ "ct", "кар" } },
-                { new Gram(),  new string[]{ "g", "г" } },
-                //{ new Ounce(), new string[]{ "oz", "унция", "унц" } },
-                { new Pound(), new string[]{ "lb" } },
-
-                #endregion
-
-                #region Temperature
-
-                { new Celsius(), new string[]{ "C", "С" } },
-                { new Kelvin(), new string[]{ "K", "К" } },
-                { new Fahrenheit(), new string[]{ "F" } },
-
-                #endregion
-
-                #region Time
-
-                { new Second(), new string[]{ "s", "с" } },
-
-                #endregion
-
-                #endregion
-
-                #region Complex units
-
-
-
-                #endregion
-        };
-
         public static AbstractUnit GetUnit(string str)
         {
             if(str == "")
@@ -89,14 +33,15 @@ namespace MathEquationParsing
                 return new DimensionlessUnit();
             }
 
-            if(str.Contains('+') || str.Contains('-'))
+            if(//str.Contains('+') || str.Contains('-') || 
+                str.Contains('/'))
             {
                 throw new IncorrectUnitException($"Incorrect unit string: \"{ str }\".");
             }
 
             string simplifiedStr = Simplify(str);
 
-            string[] parts = simplifiedStr.Split(' ')
+            string[] parts = simplifiedStr.Split(' ', '*')
                     .Where(x => x.Length > 0)
                     .ToArray();
             AbstractUnit output = new DimensionlessUnit();
@@ -107,7 +52,7 @@ namespace MathEquationParsing
 
                 for (int i = 0; i < Math.Abs(power); i++)
                 {
-                    AbstractUnit unit = ParseSingleUnit(unitStr);
+                    AbstractUnit unit = SingleUnitParsing.ParseSingleUnit(unitStr);
                     if(power > 0)
                     {
                         output *= unit;
@@ -126,27 +71,20 @@ namespace MathEquationParsing
         {
             str = str.Trim(' ');
 
-            if(str == "1")
+            if (str == "1")
             {
                 return "";
             }
 
-            if (str.Contains('/'))
-            {
-                MinimizeDivisionSigns(str, out string dividend, out string divisor);
-
-                string simpleLeft = Simplify(dividend);
-                string simpleRight = InversePowers(Simplify(divisor));
-
-                string allStr = (simpleLeft + " " + simpleRight).Trim(' ');
-                return SimplifyPowers(allStr);
-            }
-            else
-            {
-                return SimplifyPowers(str);
-            }
+            return SimplifyPowers(str);
         }
 
+        /// <summary>
+        /// Split complex equation into single fraction with dividend and divisor
+        /// </summary>
+        /// <param name="str">Math equation string</param>
+        /// <param name="dividend">Result dividend</param>
+        /// <param name="divisor">Result divisor</param>
         private static void MinimizeDivisionSigns(string str, out string dividend, out string divisor)
         {
             dividend = "";
@@ -250,6 +188,11 @@ namespace MathEquationParsing
             throw new Exception();
         }
 
+        /// <summary>
+        /// Find same units and simplify their powers
+        /// </summary>
+        /// <param name="str">Units string</param>
+        /// <returns>Units string with unique units with powers</returns>
         private static string SimplifyPowers(string str)
         {
             Dictionary<string, int> units = new Dictionary<string, int>();
@@ -361,70 +304,6 @@ namespace MathEquationParsing
             throw new Exception($"Char '{ ch }' was not found in string.");
         }
 
-        private static AbstractUnit ParseSingleUnit(string str)
-        {
-            IOrderedEnumerable<string> allUnitAbbrevationsFromLongest = GetAllUnitAbbrevationsFromLongest();
 
-            foreach(string abbrevation in allUnitAbbrevationsFromLongest)
-            {
-                
-                if(str == abbrevation)
-                {
-                    return GetAbstractUnit(abbrevation);
-                }
-                else if (str.EndsWith(abbrevation))
-                {
-                    if (str.Length > abbrevation.Length)
-                    {
-                        string metricPrefixStr = str.Substring(0, str.Length - abbrevation.Length);
-
-                        if (MetricPrefixParsing.IsMetricPrefix(metricPrefixStr))
-                        {
-                            MetricPrefix metricPrefix = MetricPrefixParsing.GetMetricPrefix(metricPrefixStr);
-                            AbstractUnit unit = GetAbstractUnit(abbrevation);
-
-                            return MetricPrefixParsing.ApplyMetricPrefix(unit, metricPrefix);
-                        }
-                    }
-                }
-            }
-
-            throw new IncorrectUnitException($"Unable to parse string \"{ str }\" to unit.");
-        }
-
-        private static AbstractUnit GetAbstractUnit(string unitAbbrevation)
-        {
-            foreach (var item in _unitsDict)
-            {
-                string[] unitAbbrevations = item.Value;
-
-                if (unitAbbrevations.Contains(unitAbbrevation))
-                {
-                    return item.Key;
-                }
-            }
-
-            throw new IncorrectUnitException();
-        }
-
-
-        private static IOrderedEnumerable<string> _allUnitAbbrevationsFromLongest = null;
-
-        private static IOrderedEnumerable<string> GetAllUnitAbbrevationsFromLongest()
-        {
-            if (_allUnitAbbrevationsFromLongest == null)
-            {
-                List<string> allAbbrevations = new List<string>();
-
-                foreach (string[] abbrevations in _unitsDict.Values)
-                {
-                    allAbbrevations.AddRange(abbrevations);
-                }
-
-                _allUnitAbbrevationsFromLongest = allAbbrevations.OrderByDescending(x => x.Length);
-            }
-
-            return _allUnitAbbrevationsFromLongest;
-        }
     }
 }
