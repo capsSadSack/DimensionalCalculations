@@ -23,7 +23,7 @@ namespace DimensionalCalculations
             }
         }
 
-        public DimensionVector Dimension;
+        public DimensionVector Dimension { get; private set; }
 
 
         public PhysicalQuantity(double value_SI, DimensionVector dimension_SI)

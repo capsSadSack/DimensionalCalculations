@@ -64,7 +64,7 @@ namespace MathEquationParsing
             {
                 throw new ArgumentException("Wrong string format. String must contain symbols to be parsed.");
             }
-            else if (str.Length > 0 && !IsNumber(str.First()))
+            else if (str.Length > 0 && !IsNumber(str.First()) && !IsSign(str.First()))
             {
                 throw new ArgumentException("Wrong string format. String must be started with number.");
             }
@@ -75,7 +75,7 @@ namespace MathEquationParsing
             {
                 char currCh = str[i];
 
-                if (IsNumber(currCh))
+                if (IsNumber(currCh) || IsSign(currCh))
                 {
                     numberStr += currCh;
                 }
@@ -86,6 +86,11 @@ namespace MathEquationParsing
             }
 
             return new List<string> { numberStr, str.Substring(numberStr.Length) };
+        }
+
+        private static bool IsSign(char ch)
+        {
+            return ch == '-' || ch == '+';
         }
 
         private static bool IsNumber(char ch)

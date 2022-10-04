@@ -15,7 +15,7 @@ namespace DimensionalCalculationsControllers
 
         public void ProcessString(string str)
         {
-            str = str.Trim('\r', '\n');
+            str = str.Replace("\r", "").Replace("\n", "");
 
             SplitPhysicalQuantitiesAndOperators(str,
                 out List<PhysicalQuantity> pqs, out List<Operator> operators);
