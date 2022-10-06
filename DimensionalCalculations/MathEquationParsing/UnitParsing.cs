@@ -20,10 +20,16 @@ namespace MathEquationParsing
                 return new DimensionlessUnit();
             }
 
-            if(str.Contains('/'))
+            if(!BracketsParsing.CheckBrackets(str))
+            {
+                throw new IncorrectBracketsException($"Incorrect brackets in string \"{ str }\".");
+            }
+
+            if(str.Contains('+') || str.Contains('-'))// || str.Contains('/'))
             {
                 throw new IncorrectUnitException($"Incorrect unit string: \"{ str }\".");
             }
+
 
             string simplifiedStr = Simplify(str);
 
@@ -62,7 +68,20 @@ namespace MathEquationParsing
                 return "";
             }
 
-            return SimplifyPowers(str);
+            if (str.Contains('/'))
+            {
+                MinimizeDivisionSigns(str, out string dividend, out string divisor);
+
+                string simpleLeft = Simplify(dividend);
+                string simpleRight = InversePowers(Simplify(divisor));
+
+                string allStr = (simpleLeft + " " + simpleRight).Trim(' ');
+                return SimplifyPowers(allStr);
+            }
+            else
+            {
+                return SimplifyPowers(str);
+            }
         }
 
         /// <summary>

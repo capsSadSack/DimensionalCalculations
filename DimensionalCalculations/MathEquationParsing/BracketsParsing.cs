@@ -40,12 +40,9 @@ namespace MathEquationParsing
 
         // Returns true if character1 and character2
         // are matching left and right brackets */
-        private static bool IsMatchingPair(char character1,
-                                      char character2)
+        private static bool IsMatchingPair(char character1, char character2)
         {
-            if (character1 == '(' && character2 == ')' ||
-                character1 == '{' && character2 == '}' ||
-                character1 == '[' && character2 == ']')
+            if (AreOpenAndCloseBrackets(character1, character2))
             {
                 return true;
             }
@@ -66,9 +63,7 @@ namespace MathEquationParsing
             {
                 // If the exp[i] is a starting
                 // bracket then push it
-                if (exp[i] == '{' ||
-                    exp[i] == '(' ||
-                    exp[i] == '[')
+                if (IsOpenBracket(exp[i]))
                 {
                     st.Push(exp[i]);
                 }
@@ -76,11 +71,8 @@ namespace MathEquationParsing
                 //  If exp[i] is an ending bracket
                 //  then pop from stack and check if the
                 //   popped bracket is a matching pair
-                if (exp[i] == '}' || 
-                    exp[i] == ')' || 
-                    exp[i] == ']')
+                if (IsCloseBracket(exp[i]))
                 {
-
                     // If we see an ending bracket without
                     //   a pair then return false
                     if (st.Count == 0)
@@ -110,6 +102,33 @@ namespace MathEquationParsing
                 // not balanced
                 return false;
             }
+        }
+
+        private static bool AreOpenAndCloseBrackets(char ch1, char ch2)
+        {
+            return
+                ch1 == '(' && ch2 == ')' ||
+                ch1 == '{' && ch2 == '}' ||
+                ch1 == '[' && ch2 == ']';
+        }
+
+        private static bool IsOpenBracket(char ch)
+        {
+            return ch == '{' ||
+                   ch == '(' ||
+                   ch == '[';
+        }
+
+        private static bool IsCloseBracket(char ch)
+        {
+            return ch == '}' ||
+                   ch == ')' ||
+                   ch == ']';
+        }
+
+        public static bool RemoveUselessBrackets(string str)
+        {
+
         }
 
         public static bool ContainsOnlyPowerBrackets(string str)
