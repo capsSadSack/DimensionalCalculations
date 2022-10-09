@@ -12,7 +12,7 @@ namespace MathEquationParsing
     public static class PhysicalQuantityParsing
     {
         public static PhysicalQuantity ParsePhysicalQuantity(string str)
-        {
+        { 
             SplitNumberAndUnit(str, out string numberStr, out string unitStr);
 
             double value = Convert.ToDouble(numberStr);
@@ -25,7 +25,7 @@ namespace MathEquationParsing
             numberStr = "";
             unitStr = "";
 
-            string[] parts = str.Split(' ')
+            string[] parts = SplitAfterNumber(str)
                 .Where(x => x.Length > 0)
                 .ToArray();
 
@@ -57,6 +57,47 @@ namespace MathEquationParsing
                 }
             }
         }
+
+        private static IEnumerable<string> SplitAfterNumber(string str)
+        {
+            if (str.Length == 0)
+            {
+                throw new ArgumentException("Wrong string format. String must contain symbols to be parsed.");
+            }
+            else if (str.Length > 0 && !IsNumber(str.First()) && !IsSign(str.First()))
+            {
+                throw new ArgumentException("Wrong string format. String must be started with number.");
+            }
+
+            string numberStr = string.Empty;
+
+            for (int i = 0; i < str.Length; i++)
+            {
+                char currCh = str[i];
+
+                if (IsNumber(currCh) || IsSign(currCh))
+                {
+                    numberStr += currCh;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return new List<string> { numberStr, str.Substring(numberStr.Length) };
+        }
+
+        private static bool IsSign(char ch)
+        {
+            return ch == '-' || ch == '+';
+        }
+
+        private static bool IsNumber(char ch)
+        {
+            return ch >= '0' && ch <= '9';
+        }
+
 
         #region Checkings
 

@@ -1,29 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 using DimensionalCalculations;
 using DimensionalCalculations.Units;
-using DimensionalCalculations.Units.UnitsAmountOfSubstance;
-using DimensionalCalculations.Units.UnitsCurrent;
-using DimensionalCalculations.Units.UnitsLength;
-using DimensionalCalculations.Units.UnitsLuminousIntensity;
-using DimensionalCalculations.Units.UnitsMass;
-using DimensionalCalculations.Units.UnitsTemperature;
-using DimensionalCalculations.Units.UnitsTime;
 using MathEquationParsing.Exceptions;
-using MathEquationParsing.Models;
 
 [assembly: InternalsVisibleTo("MathEquationParsing.Tests")]
 
 namespace MathEquationParsing
 {
-    // NOTE: [CG, 2022.08.10] Brackets problems:
-    // - unable to parse brackets in brackets, etc.
-    // -
+    /// <summary>
+    /// Parsing complex units with powers
+    /// </summary>
     public static class UnitParsing
     {
         public static AbstractUnit GetUnit(string str)
@@ -33,8 +20,12 @@ namespace MathEquationParsing
                 return new DimensionlessUnit();
             }
 
-            if(//str.Contains('+') || str.Contains('-') || 
-                str.Contains('/'))
+            if(!BracketsParsing.CheckBrackets(str))
+            {
+                throw new IncorrectBracketsException($"Incorrect brackets in string \"{ str }\".");
+            }
+
+            if(str.Contains('+') || str.Contains('-'))// || str.Contains('/'))
             {
                 throw new IncorrectUnitException($"Incorrect unit string: \"{ str }\".");
             }
@@ -75,8 +66,22 @@ namespace MathEquationParsing
             {
                 return "";
             }
+            str = BracketsParsing.RemoveUselessBrackets(str);
 
-            return SimplifyPowers(str);
+            if (str.Contains('/'))
+            {
+                MinimizeDivisionSigns(str, out string dividend, out string divisor);
+
+                string simpleLeft = Simplify(dividend);
+                string simpleRight = InversePowers(Simplify(divisor));
+
+                string allStr = (simpleLeft + " " + simpleRight).Trim(' ');
+                return SimplifyPowers(allStr);
+            }
+            else
+            {
+                return SimplifyPowers(str);
+            }
         }
 
         /// <summary>
@@ -303,7 +308,5 @@ namespace MathEquationParsing
 
             throw new Exception($"Char '{ ch }' was not found in string.");
         }
-
-
     }
 }

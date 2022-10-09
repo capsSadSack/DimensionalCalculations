@@ -4,7 +4,7 @@ using DimensionalCalculations;
 
 namespace MathEquationParsing.Tests
 {
-    public class MathEquationParsingTests
+    public class PhysicalQuantityParsingTests
     {
         #region Parsing Physical Quantity
 

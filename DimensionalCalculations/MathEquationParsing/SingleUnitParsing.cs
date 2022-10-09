@@ -19,6 +19,9 @@ using Meter = DimensionalCalculations.Units.UnitsLength.Meter;
 
 namespace MathEquationParsing
 {
+    /// <summary>
+    /// Single unit parsing like 'kg', 'km'
+    /// </summary>
     public static class SingleUnitParsing
     {
         private static Dictionary<AbstractUnit, string[]> _unitsDict =
