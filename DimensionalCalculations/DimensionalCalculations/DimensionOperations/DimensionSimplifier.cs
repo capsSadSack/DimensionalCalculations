@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace DimensionalCalculations.DimensionOperations
 {
-    internal class DimensionSimplifier
+    internal static class DimensionSimplifier
     {
+        //private readonly 
 
+        public static string GetDimensionString(DimensionVector dimension)
+        {
+            return "";
+        }
     }
 }
