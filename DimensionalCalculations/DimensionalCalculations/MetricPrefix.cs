@@ -1,4 +1,4 @@
-﻿namespace MathEquationParsing.Models
+﻿namespace DimensionalCalculations
 {
     public enum MetricPrefix
     {

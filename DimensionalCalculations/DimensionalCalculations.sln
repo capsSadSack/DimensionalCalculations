@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MathEquationParsing.Tests",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DimensionalCalculations.Tests", "DimensionalCalculations.Tests\DimensionalCalculations.Tests.csproj", "{44363704-826E-44AF-AD19-D64610D3B910}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DimensionalCalculationsControllers", "DimensionalCalculationsControllers\DimensionalCalculationsControllers.csproj", "{9A779573-E188-438A-B37A-9A10A8EB6F4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DimensionalCalculationsControllers", "DimensionalCalculationsControllers\DimensionalCalculationsControllers.csproj", "{9A779573-E188-438A-B37A-9A10A8EB6F4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
