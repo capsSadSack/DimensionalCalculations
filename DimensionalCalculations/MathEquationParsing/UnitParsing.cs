@@ -30,7 +30,6 @@ namespace MathEquationParsing
                 throw new IncorrectUnitException($"Incorrect unit string: \"{ str }\".");
             }
 
-
             string simplifiedStr = Simplify(str);
 
             string[] parts = simplifiedStr.Split(' ', '*')
@@ -67,6 +66,7 @@ namespace MathEquationParsing
             {
                 return "";
             }
+            str = BracketsParsing.RemoveUselessBrackets(str);
 
             if (str.Contains('/'))
             {

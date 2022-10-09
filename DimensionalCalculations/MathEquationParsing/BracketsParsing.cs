@@ -63,7 +63,7 @@ namespace MathEquationParsing
             {
                 // If the exp[i] is a starting
                 // bracket then push it
-                if (IsOpenBracket(exp[i]))
+                if (IsOpenedBracket(exp[i]))
                 {
                     st.Push(exp[i]);
                 }
@@ -71,7 +71,7 @@ namespace MathEquationParsing
                 //  If exp[i] is an ending bracket
                 //  then pop from stack and check if the
                 //   popped bracket is a matching pair
-                if (IsCloseBracket(exp[i]))
+                if (IsClosedBracket(exp[i]))
                 {
                     // If we see an ending bracket without
                     //   a pair then return false
@@ -112,51 +112,136 @@ namespace MathEquationParsing
                 ch1 == '[' && ch2 == ']';
         }
 
-        private static bool IsOpenBracket(char ch)
+        private static bool IsOpenedBracket(char ch)
         {
             return ch == '{' ||
                    ch == '(' ||
                    ch == '[';
         }
 
-        private static bool IsCloseBracket(char ch)
+        private static bool IsClosedBracket(char ch)
         {
             return ch == '}' ||
                    ch == ')' ||
                    ch == ']';
         }
 
-        public static bool RemoveUselessBrackets(string str)
+        public static string RemoveUselessBrackets(string str)
         {
+            IEnumerable<(int, int)> bracketPairIndexes = GetBracketPairIndexes(str)
+                .OrderBy(x => x.Item1);
+            List<(int, int)> pairsToRemove = new List<(int, int)>();
 
-        }
-
-        public static bool ContainsOnlyPowerBrackets(string str)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static bool IsPhysQuantity(string str)
-        {
-            string[] parts = str.Trim(' ').Split(' ');
-
-            throw new NotImplementedException();
-        } 
-
-        public static string CutInnerBrackets(string str, 
-            out string remainsLeftStr, out string remainsRightStr)
-        {
-            remainsLeftStr = String.Empty;
-            remainsRightStr = String.Empty;
-
-            if (CheckBrackets(str))
+            for (int i = 0; i < bracketPairIndexes.Count() - 1; i++)
             {
-                throw new NotImplementedException();
+                var first = bracketPairIndexes.ElementAt(i);
+                var second = bracketPairIndexes.ElementAt(i + 1);
+
+                if (first.Item1 == second.Item1 - 1 &&
+                    first.Item2 == second.Item2 + 1)
+                {
+                    pairsToRemove.Add(first);
+                }
+            }
+
+            List<int> indexesToRemove = new List<int>();
+            foreach(var pair in pairsToRemove)
+            {
+                indexesToRemove.Add(pair.Item1);
+                indexesToRemove.Add(pair.Item2);
+            }
+            indexesToRemove = indexesToRemove.OrderByDescending(x => x).ToList();
+
+            string output = str;
+            foreach(int index in indexesToRemove)
+            {
+                output = output.Remove(index, 1);
+            }
+
+            return output;
+        }
+
+        private static IEnumerable<(int, int)> GetBracketPairIndexes(string str)
+        {
+            List<(int, int)> output = new List<(int, int)>();
+            Stack<(char BracketChar, int Index)> stack = new();
+
+            for (int i = 0; i < str.Length; i++)
+            {
+                if (IsOpenedBracket(str[i]))
+                {
+                    stack.Push((str[i], i));
+                }
+
+                if (IsClosedBracket(str[i]))
+                {
+                    if (stack.Count == 0)
+                    {
+                        throw new IncorrectBracketsException("");
+                    }
+                    else
+                    {
+                        var lastItem = stack.Pop();
+                        if (IsMatchingPair(lastItem.BracketChar, str[i]))
+                        {
+                            output.Add((lastItem.Index, i));
+                        }
+                        else
+                        {
+                            throw new IncorrectBracketsException("");
+                        }
+                    }
+                }
+            }
+
+            if (stack.Count == 0)
+            {
+                return output;
             }
             else
             {
-                throw new IncorrectBracketsException();
+                throw new IncorrectBracketsException("Brackets stack is unbalanced.");
             }
+        }
+
+        public static bool NoNestedBrackets(string str)
+        {
+            BracketState currentState = BracketState.None;
+
+            for (int i = 0; i < str.Count(); i++)
+            {
+                if (currentState == BracketState.None)
+                {
+                    if (IsOpenedBracket(str[i]))
+                    {
+                        currentState = BracketState.OpenedBracket;
+                    }
+                    else if (IsClosedBracket(str[i]))
+                    {
+                        throw new ArgumentException($"String has wrong format: {str}.");
+                    }
+                }
+                else if (currentState == BracketState.OpenedBracket)
+                {
+                    if (IsOpenedBracket(str[i]))
+                    {
+                        return false;
+                    }
+                    else if (IsClosedBracket(str[i]))
+                    {
+                        currentState = BracketState.None;
+                    }
+                }
+            }
+
+            return currentState == BracketState.None;
+        }
+        
+        private enum BracketState
+        {
+            None,
+            OpenedBracket,
+            ClosedBracket
         }
     }
 }

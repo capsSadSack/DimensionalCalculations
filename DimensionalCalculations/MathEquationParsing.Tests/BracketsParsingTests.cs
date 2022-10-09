@@ -42,5 +42,30 @@ namespace MathEquationParsing.Tests
         {
             Assert.IsFalse(BracketsParsing.CheckBrackets(str));
         }
+
+        [TestCase("((text))")]
+        [TestCase("[(text)]")]
+        [TestCase("[{(text)}]")]
+        public void NestedBrackets_RemoveUselessBrackets_Correct(string str)
+        {
+            string formattedStr = BracketsParsing.RemoveUselessBrackets(str);
+            Assert.AreEqual("(text)", formattedStr);
+        }
+
+        [TestCase("()()()")]
+        [TestCase("[](){}")]
+        [TestCase("()text()")]
+        public void NoNestedBrackets_NoNestedBrackets_Correct(string str)
+        {
+            Assert.IsTrue(BracketsParsing.NoNestedBrackets(str));
+        }
+
+        [TestCase("(())")]
+        [TestCase("([])")]
+        [TestCase("(){()}")]
+        public void NestedBrackets_NoNestedBrackets_Correct(string str)
+        {
+            Assert.IsFalse(BracketsParsing.NoNestedBrackets(str));
+        }
     }
 }

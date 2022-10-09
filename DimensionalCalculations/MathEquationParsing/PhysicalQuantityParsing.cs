@@ -12,7 +12,7 @@ namespace MathEquationParsing
     public static class PhysicalQuantityParsing
     {
         public static PhysicalQuantity ParsePhysicalQuantity(string str)
-        {
+        { 
             SplitNumberAndUnit(str, out string numberStr, out string unitStr);
 
             double value = Convert.ToDouble(numberStr);
