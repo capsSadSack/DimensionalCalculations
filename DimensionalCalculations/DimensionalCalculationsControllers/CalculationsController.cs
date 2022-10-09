@@ -1,4 +1,5 @@
 ﻿using DimensionalCalculations;
+using DimensionalCalculations.DimensionOperations;
 using MathEquationParsing;
 
 namespace DimensionalCalculationsControllers
@@ -35,7 +36,8 @@ namespace DimensionalCalculationsControllers
                 }
             }
 
-            Console.WriteLine("Finished!!");
+            string pqStr = DimensionSimplifier.ConvertToString(result, SystemOfUnits.SystemInternational);
+            Console.WriteLine(pqStr);
         }
 
         private void SplitPhysicalQuantitiesAndOperators(string str, 

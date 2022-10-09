@@ -1,7 +1,6 @@
 ﻿using DimensionalCalculations;
+using DimensionalCalculations.Units;
 using MathEquationParsing.Exceptions;
-using MathEquationParsing.Models;
-using UnitsLib;
 
 namespace MathEquationParsing
 {
@@ -20,7 +19,7 @@ namespace MathEquationParsing
 
                 if (str == abbrevation)
                 {
-                    return Units.GetAbstractUnit(abbrevation);
+                    return UnitsBase.GetAbstractUnit(abbrevation);
                 }
                 else if (str.EndsWith(abbrevation))
                 {
@@ -28,12 +27,12 @@ namespace MathEquationParsing
                     {
                         string metricPrefixStr = str.Substring(0, str.Length - abbrevation.Length);
 
-                        if (MetricPrefixParsing.IsMetricPrefix(metricPrefixStr))
+                        if (MetricPrefixes.IsMetricPrefix(metricPrefixStr))
                         {
-                            MetricPrefix metricPrefix = MetricPrefixParsing.GetMetricPrefix(metricPrefixStr);
-                            AbstractUnit unit = Units.GetAbstractUnit(abbrevation);
+                            MetricPrefix metricPrefix = MetricPrefixes.GetMetricPrefix(metricPrefixStr);
+                            AbstractUnit unit = UnitsBase.GetAbstractUnit(abbrevation);
 
-                            return MetricPrefixParsing.ApplyMetricPrefix(unit, metricPrefix);
+                            return ApplyMetricPrefix(unit, metricPrefix);
                         }
                     }
                 }
@@ -42,6 +41,11 @@ namespace MathEquationParsing
             throw new IncorrectUnitException($"Unable to parse string \"{str}\" to unit.");
         }
 
+        private static AbstractUnit ApplyMetricPrefix(AbstractUnit unit, MetricPrefix metricPrefix)
+        {
+            int power = MetricPrefixes.GetMetricPrefixPower(metricPrefix);
+            return new MetricPrefixDecorator(unit, power);
+        }
 
         private static IOrderedEnumerable<string> _allUnitAbbrevationsFromLongest = null;
 
@@ -49,7 +53,7 @@ namespace MathEquationParsing
         {
             if (_allUnitAbbrevationsFromLongest == null)
             {
-                IEnumerable<string> allUnitAbbrevations = Units.GetAllUnitAbbrevations();
+                IEnumerable<string> allUnitAbbrevations = UnitsBase.GetAllUnitAbbrevations();
                 _allUnitAbbrevationsFromLongest = allUnitAbbrevations.OrderByDescending(x => x.Length);
             }
 

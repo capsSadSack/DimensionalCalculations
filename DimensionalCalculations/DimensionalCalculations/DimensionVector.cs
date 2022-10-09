@@ -113,5 +113,19 @@ namespace DimensionalCalculations
                 && Time == 0
                 && Temperature == 0;
         }
+
+        public static double GetDistance(DimensionVector dv1, DimensionVector dv2)
+        {
+            double result =  
+                Math.Pow(dv2.LuminousIntensity - dv1.LuminousIntensity, 2) +
+                Math.Pow(dv2.Current - dv1.Current, 2) +
+                Math.Pow(dv2.Length - dv1.Length, 2) +
+                Math.Pow(dv2.Mass - dv1.Mass, 2) +
+                Math.Pow(dv2.AmountOfSubstance - dv1.AmountOfSubstance, 2) +
+                Math.Pow(dv2.Time - dv1.Time, 2) +
+                Math.Pow(dv2.Temperature - dv1.Temperature, 2);
+            
+            return Math.Sqrt(result);
+        }
     }
 }

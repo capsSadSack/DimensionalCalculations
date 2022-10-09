@@ -1,4 +1,5 @@
-﻿using DimensionalCalculations.Units.UnitsAmountOfSubstance;
+﻿using DimensionalCalculations.Units;
+using DimensionalCalculations.Units.UnitsAmountOfSubstance;
 using DimensionalCalculations.Units.UnitsCurrent;
 using DimensionalCalculations.Units.UnitsEnergy;
 using DimensionalCalculations.Units.UnitsForce;
@@ -15,84 +16,83 @@ namespace DimensionalCalculations
     {
         #region All units
 
-        private static Dictionary<AbstractUnit, string[]> _unitsDict =
-            new Dictionary<AbstractUnit, string[]>()
+        private static Dictionary<Type, string[]> _unitsDict =
+            new Dictionary<Type, string[]>()
         { 
             #region Base units 
  
             #region Amount of substance 
  
-            { new Mole(), new string[]{ "mol", "моль" } }, 
+            { typeof(Mole), new string[]{ "mol", "моль" } }, 
  
             #endregion 
  
             #region Current 
  
-            { new Ampere(), new string[]{ "A", "А" } }, 
+            { typeof(Ampere), new string[]{ "A", "А" } }, 
  
             #endregion 
  
             #region Length 
  
-            { new Meter(), new string[]{ "m", "м" } },
-            { new Mile(), new string[]{ "mi", "миля" } }, 
+            { typeof(Meter), new string[]{ "m", "м" } },
+            { typeof(Mile), new string[]{ "mi", "миля" } }, 
  
             #endregion 
  
             #region Luminous intensity 
  
-            { new Candela(), new string[]{ "cd", "кд" } }, 
+            { typeof(Candela), new string[]{ "cd", "кд" } }, 
  
             #endregion 
  
             #region Mass 
  
-            { new Carat(), new string[]{ "ct", "кар" } },
-            { new Gram(),  new string[]{ "g", "г" } }, 
-            //{ new Ounce(), new string[]{ "oz", "унция", "унц" } }, 
-            { new Pound(), new string[]{ "lb" } }, 
+            { typeof(Carat), new string[]{ "ct", "кар" } },
+            { typeof(Gram),  new string[]{ "g", "г" } }, 
+            { typeof(Pound), new string[]{ "lb" } }, 
  
             #endregion 
  
             #region Temperature 
  
-            { new Celsius(), new string[]{ "C", "С" } },
-            { new Kelvin(), new string[]{ "K", "К" } },
-            { new Fahrenheit(), new string[]{ "F" } }, 
+            { typeof(Celsius), new string[]{ "C", "С" } },
+            { typeof(Kelvin), new string[]{ "K", "К" } },
+            { typeof(Fahrenheit), new string[]{ "F" } }, 
  
             #endregion 
  
             #region Time 
  
-            { new Second(), new string[]{ "s", "с" } },
+            { typeof(Second), new string[]{ "s", "с" } },
 
-                #endregion
+            #endregion
 
-                #endregion
+            #endregion
 
             #region Complex units 
 
-                #region Force
+            #region Force
 
-                { new Newton(), new string[]{ "N", "Н" } },
-                { new Dyne(), new string[] { "dyn", "дина" } },
+            { typeof(Newton), new string[]{ "N", "Н" } },
+            { typeof(Dyne), new string[] { "dyn", "дина" } },
 
-                #endregion
+            #endregion
 
-                #region Power
+            #region Power
 
-                { new Watt(), new string[]{ "W", "Вт" } },
-                { new Horsepower(), new string[] { "hp", "лс" } },
+            { typeof(Watt), new string[]{ "W", "Вт" } },
+            { typeof(Horsepower), new string[] { "hp", "лс" } },
 
-                #endregion
+            #endregion
 
-                #region Energy
+            #region Energy
 
-                { new Joule(), new string[]{ "J", "Дж" } },
-                { new Erg(), new string[] { "erg", "эрг" } },
-                { new Electronvolt(), new string[] { "eV", "эВ" } },
+            { typeof(Joule), new string[]{ "J", "Дж" } },
+            { typeof(Erg), new string[] { "erg", "эрг" } },
+            { typeof(Electronvolt), new string[] { "eV", "эВ" } },
 
-                #endregion
+            #endregion
 
             #endregion
         };
@@ -108,16 +108,13 @@ namespace DimensionalCalculations
 
                 if (unitAbbrevations.Contains(unitAbbrevation))
                 {
-                    return item.Key;
+                    Type unitType = item.Key;
+                    return (AbstractUnit)Activator.CreateInstance(unitType);
+
                 }
             }
 
             throw new Exception($"Units' abbrevations dictionary does not contain string {unitAbbrevation}");
-        }
-
-        public static IEnumerable<AbstractUnit> GetAllUnits()
-        {
-            return _unitsDict.Keys;
         }
 
         public static IEnumerable<string> GetAllUnitAbbrevations()
@@ -130,6 +127,46 @@ namespace DimensionalCalculations
             }
 
             return allAbbrevations;
+        }
+
+        public static string GetAlias(Type unit)
+        {
+            return _unitsDict[unit].First();
+        }
+
+        public static IEnumerable<AbstractUnit> GetUnits(SystemOfUnits system)
+        {
+            IEnumerable<AbstractUnit> output = null;
+
+            switch (system)
+            {
+                case SystemOfUnits.SystemInternational:
+                    output = new List<AbstractUnit>()
+                    {
+                        new Meter(),
+                        new MetricPrefixDecorator(new Gram(), 3),
+                        new Second(),
+                        new Mole(),
+                        new Candela(),
+                        new Ampere(),
+                        new Kelvin(),
+                        
+                        new Newton(),
+                        new Joule(),
+                        new Watt()
+                    };
+                    break;
+                case SystemOfUnits.SGS:
+                    output = new List<AbstractUnit>()
+                    {
+                        new MetricPrefixDecorator(new Meter(), -2),
+                        new Gram(),
+                        new Second(),
+                    };
+                    break;
+            }
+
+            return output;
         }
     }
 }
