@@ -3,7 +3,7 @@ Console.WriteLine("Enter physical quantity. ");
 Console.WriteLine("At first, its value, than units (e.g. 1 (m) / (s^2))");
 Console.WriteLine("Than - operator (e.g. +, -, *, /)");
 Console.WriteLine("And the next physical quantity.");
-Console.WriteLine("To start calculations enter '='.");
+Console.WriteLine("To start calculations enter '='.\n");
 
 string str = string.Empty;
 

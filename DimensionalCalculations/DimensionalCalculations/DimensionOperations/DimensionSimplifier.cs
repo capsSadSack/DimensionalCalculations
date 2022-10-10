@@ -36,10 +36,14 @@ namespace DimensionalCalculations.DimensionOperations
             {
                 return $"{ pq.Value } { nom }";
             }
+            else if (!denom.Contains(' '))
+            {
+                return $"{ pq.Value } {nom} / {denom}";
+            }   
             else
             {
-                return $"{ pq.Value }";
-            }            
+                return $"{pq.Value} {nom} / ({denom})";
+            }
         }
 
         private static string ConvertToString(IEnumerable<(AbstractUnit Unit, int Power)> units,
@@ -66,7 +70,7 @@ namespace DimensionalCalculations.DimensionOperations
                 output += " ";
             }
 
-            return output;
+            return output.Trim(' ');
         }
 
         private static string GetMetricPrefix(AbstractUnit unit, IEnumerable<AbstractUnit> baseUnits)
