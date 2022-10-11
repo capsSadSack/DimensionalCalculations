@@ -2,6 +2,8 @@
 {
     public enum MetricPrefix
     {
+        None,
+
         #region Multiple
 
         Deca,

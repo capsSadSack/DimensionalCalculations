@@ -104,5 +104,21 @@ namespace DimensionalCalculations
         }
 
         #endregion 
+
+        // TODO: [CG, 2022.10.11] To convert to another system of units
+        public double ToSystemOfUnits(SystemOfUnits systemOfUnits)
+        {
+            if(systemOfUnits == SystemOfUnits.SystemInternational)
+            {
+                return this.Value;
+            }
+            else
+            {
+                IEnumerable<AbstractUnit> baseUnits = UnitsBase.GetUnits(systemOfUnits);
+
+
+                throw new NotImplementedException();
+            }
+        }
     }
 }

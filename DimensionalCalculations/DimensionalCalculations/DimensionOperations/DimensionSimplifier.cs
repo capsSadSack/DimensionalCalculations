@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DimensionalCalculations.Units;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,33 +17,33 @@ namespace DimensionalCalculations.DimensionOperations
             IEnumerable<(AbstractUnit Unit, int Power)> unitsInPowers = 
                 DecomposeDimension(pq.Dimension, baseUnits);
 
-
             IEnumerable<(AbstractUnit Unit, int Power)> nominatorUnits = unitsInPowers.Where(x => x.Power >= 1);
             IEnumerable<(AbstractUnit Unit, int Power)> denominatorUnits = unitsInPowers.Where(x => x.Power <= -1);
 
+            double value = pq.Value;
             string nom = ConvertToString(nominatorUnits, baseUnits, false);
-            string denom = ConvertToString(denominatorUnits, baseUnits, true); ;
+            string denom = ConvertToString(denominatorUnits, baseUnits, true);
 
-            // HACK: [CG, 2022.10.09] Value will change because of system of units
+            // HACK: [CG, 2022.10.09] Value must be changed with system of units
             if (nom.Length == 0 && denom.Length == 0)
             {
-                return $"{ pq.Value }";
+                return $"{ value }";
             }
             else if(nom.Length == 0)
             {
-                return $"{ pq.Value } 1 / ({ denom })";
+                return $"{ value } 1 / ({ denom })";
             }
             else if(denom.Length == 0)
             {
-                return $"{ pq.Value } { nom }";
+                return $"{ value } { nom }";
             }
             else if (!denom.Contains(' '))
             {
-                return $"{ pq.Value } {nom} / {denom}";
+                return $"{ value } { nom } / { denom }";
             }   
             else
             {
-                return $"{pq.Value} {nom} / ({denom})";
+                return $"{ value } { nom } / ({ denom })";
             }
         }
 
@@ -53,8 +54,9 @@ namespace DimensionalCalculations.DimensionOperations
 
             foreach(var item in units)
             {
-                string unitStr = UnitsBase.GetAlias(item.Unit.GetType());
-                string prefix = GetMetricPrefix(item.Unit, baseUnits);
+                (string unitStr, string prefix) = GetUnitStrAndPrefix(item.Unit, baseUnits);
+
+                // TODO: Здесь должна быть проверка metric prefix самого baseunit
 
                 int power = inversePowers ? -item.Power : item.Power;
 
@@ -73,11 +75,41 @@ namespace DimensionalCalculations.DimensionOperations
             return output.Trim(' ');
         }
 
+
+        private static (string unitStr, string prefix) GetUnitStrAndPrefix(
+            AbstractUnit unit, IEnumerable<AbstractUnit> baseUnits)
+        {
+            string unitStr;
+            string prefix;
+
+            if (unit is MetricPrefixDecorator)
+            {
+                unitStr = UnitsBase.GetAlias(((MetricPrefixDecorator)unit).Type);
+                AbstractUnit originalUnit = UnitsBase.GetAbstractUnit(((MetricPrefixDecorator)unit).Type);
+                prefix = GetMetricPrefix(originalUnit, baseUnits);
+            }
+            else
+            {
+                unitStr = UnitsBase.GetAlias(unit.GetType());
+                prefix = GetMetricPrefix(unit, baseUnits);
+            }
+            
+            return (unitStr, prefix);
+        }
+
         private static string GetMetricPrefix(AbstractUnit unit, IEnumerable<AbstractUnit> baseUnits)
         {
             AbstractUnit baseUnit = baseUnits
                 .Where(bu => unit.Dimension == bu.Dimension)
                 .First();
+
+            int baseUnitPowerOfTen = 0;
+            if(baseUnit is MetricPrefixDecorator)
+            {
+                MetricPrefixDecorator mpd = (MetricPrefixDecorator)baseUnit;
+                double multiplier = mpd.MultiplicationNumber;
+                baseUnitPowerOfTen += GetPowerOfTen(multiplier);
+            }
 
             if(unit.ToSI(1) == baseUnit.ToSI(1))
             {
@@ -87,8 +119,17 @@ namespace DimensionalCalculations.DimensionOperations
             {
                 double multiplier = unit.ToSI(1) / baseUnit.ToSI(1);
                 int power = GetPowerOfTen(multiplier);
-                MetricPrefix prefix = MetricPrefixes.GetMetricPrefix(power);
-                return MetricPrefixes.GetMetricPrefixAliases(prefix).First();
+
+                if (baseUnitPowerOfTen + power != 0)
+                {
+                    MetricPrefix prefix = MetricPrefixes.GetMetricPrefix(baseUnitPowerOfTen + power);
+                    return MetricPrefixes.GetMetricPrefixAliases(prefix).First();
+                }
+                else
+                {
+                    MetricPrefix prefix = MetricPrefixes.GetMetricPrefix(baseUnitPowerOfTen);
+                    return MetricPrefixes.GetMetricPrefixAliases(prefix).First();
+                }
             }
         }   
 
@@ -156,42 +197,55 @@ namespace DimensionalCalculations.DimensionOperations
             DimensionVector remainingDimension = dimension;
             while(GetDimensionVectorLength(remainingDimension) > 1)
             {
-                AbstractUnit minDistUnit = orderedBaseUnits
+                AbstractUnit minDistUnitInNominator= orderedBaseUnits
                     .MinBy(unit => DimensionVector.GetDistance(unit.Dimension, remainingDimension));
+                AbstractUnit minDistUnitInDenominator = orderedBaseUnits
+                    .MinBy(unit => DimensionVector.GetDistance(-unit.Dimension, remainingDimension));
 
-                if(!output.ContainsKey(minDistUnit))
+                bool inNominator = 
+                    DimensionVector.GetDistance(minDistUnitInNominator.Dimension, remainingDimension) <
+                    DimensionVector.GetDistance(-minDistUnitInDenominator.Dimension, remainingDimension);
+                AbstractUnit minDistUnit = minDistUnitInNominator;
+                if (!inNominator)
+                {
+                    minDistUnit = minDistUnitInDenominator;
+                }
+
+                if (!output.ContainsKey(minDistUnit))
                 {
                     output.Add(minDistUnit, 0);
                 }
 
-                double dist = DimensionVector.GetDistance(minDistUnit.Dimension, remainingDimension);
-                if (dist > 0)
+                if (inNominator)
                 {
-                    output[minDistUnit] += 1;
-                    remainingDimension -= minDistUnit.Dimension;
+                    output[minDistUnitInNominator] += 1;
+                    remainingDimension -= minDistUnitInNominator.Dimension;
                 }
                 else
                 {
-                    output[minDistUnit] -= 1;
-                    remainingDimension += minDistUnit.Dimension;
+                    output[minDistUnitInDenominator] -= 1;
+                    remainingDimension += minDistUnitInDenominator.Dimension;
                 }
             }
 
-            var remainsUnit = orderedBaseUnits
-                .Where(unit => unit.Dimension == remainingDimension || unit.Dimension == -remainingDimension)
-                .First();
-            if (!output.ContainsKey(remainsUnit))
+            var remainsUnits = orderedBaseUnits
+                .Where(unit => unit.Dimension == remainingDimension || unit.Dimension == -remainingDimension);
+            if (remainsUnits.Count() > 0)
             {
-                output.Add(remainsUnit, 0);
-            }
+                var remainsUnit = remainsUnits.First();
+                if (!output.ContainsKey(remainsUnit))
+                {
+                    output.Add(remainsUnit, 0);
+                }
 
-            if(remainsUnit.Dimension == remainingDimension)
-            {
-                output[remainsUnit] += 1;
-            }
-            else
-            {
-                output[remainsUnit] -= 1;
+                if (remainsUnit.Dimension == remainingDimension)
+                {
+                    output[remainsUnit] += 1;
+                }
+                else
+                {
+                    output[remainsUnit] -= 1;
+                }
             }
 
             return output.Select(item => (item.Key, item.Value));
