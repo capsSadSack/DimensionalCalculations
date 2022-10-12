@@ -61,6 +61,11 @@ namespace DimensionalCalculations
 
         public static MetricPrefix GetMetricPrefix(int powerOfTen)
         {
+            if(powerOfTen == 0)
+            {
+                return MetricPrefix.None;
+            }
+
             return _prefixes.Where(x => x.power == powerOfTen)
                 .First().prefix;
         }

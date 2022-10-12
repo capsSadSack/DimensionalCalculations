@@ -20,6 +20,8 @@ while(true)
     }
 }
 
+// HACK: [CG, 2022.10.10] Program will fail with units of mass (SI) and length (in SGS)...
+
 var controller = new DimensionalCalculationsControllers.CalculationsController();
 controller.ProcessString(str);
 
