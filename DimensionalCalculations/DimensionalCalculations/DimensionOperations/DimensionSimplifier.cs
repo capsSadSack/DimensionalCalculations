@@ -24,7 +24,7 @@ namespace DimensionalCalculations.DimensionOperations
             string nom = ConvertToString(nominatorUnits, baseUnits, false);
             string denom = ConvertToString(denominatorUnits, baseUnits, true);
 
-            // HACK: [CG, 2022.10.09] Value must be changed with system of units
+            // HACK: [CG, 2022.10.09] Value must be changed with system of units. Now can print result only in SI
             if (nom.Length == 0 && denom.Length == 0)
             {
                 return $"{ value }";
@@ -55,8 +55,6 @@ namespace DimensionalCalculations.DimensionOperations
             foreach(var item in units)
             {
                 (string unitStr, string prefix) = GetUnitStrAndPrefix(item.Unit, baseUnits);
-
-                // TODO: Здесь должна быть проверка metric prefix самого baseunit
 
                 int power = inversePowers ? -item.Power : item.Power;
 
