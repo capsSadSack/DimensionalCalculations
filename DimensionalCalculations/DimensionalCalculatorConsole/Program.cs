@@ -26,9 +26,10 @@ while (!IsExitString(str))
     }
 
     var controller = new DimensionalCalculationsControllers.CalculationsController();
-    var resultStr = controller.ProcessString(str);
-
-    Console.WriteLine($"{str} = {resultStr}");
+    if(controller.TryProcessString(str, out string resultStr))
+    {
+        Console.WriteLine($"{ str.Trim(' ') } = { resultStr }");
+    }
 }
 
 Environment.Exit(0);

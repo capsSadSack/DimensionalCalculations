@@ -16,11 +16,12 @@ namespace DimensionalCalculationsControllers
             { Operator.Divide, '/' }
         };
 
-        public string ProcessString(string str)
+        public bool TryProcessString(string str, out string processedStr)
         {
             try
             {
-                return DoProcessString(str);
+                processedStr = DoProcessString(str);
+                return true;
             }
             catch (Exception ex)
             {
@@ -33,7 +34,8 @@ namespace DimensionalCalculationsControllers
                     ex is PhysicalQuantityParsingException)
                 {
                     Console.WriteLine(ex.Message);
-                    return string.Empty;
+                    processedStr = string.Empty;
+                    return false;
                 }
 
                 throw;
