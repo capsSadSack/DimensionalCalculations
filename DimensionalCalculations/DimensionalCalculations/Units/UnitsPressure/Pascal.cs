@@ -1,6 +1,6 @@
-﻿namespace DimensionalCalculations.Units.UnitsLength
+﻿namespace DimensionalCalculations.Units.UnitsPressure
 {
-    public class Meter : LengthUnit
+    public class Pascal : PressureUnit
     {
         public override double FromSI(double value)
         {

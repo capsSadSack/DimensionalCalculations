@@ -1,5 +1,7 @@
 ﻿using DimensionalCalculations.Units;
+using DimensionalCalculations.Units.AllUnitsElectricity;
 using DimensionalCalculations.Units.UnitsAmountOfSubstance;
+using DimensionalCalculations.Units.UnitsArea;
 using DimensionalCalculations.Units.UnitsCurrent;
 using DimensionalCalculations.Units.UnitsEnergy;
 using DimensionalCalculations.Units.UnitsForce;
@@ -7,8 +9,10 @@ using DimensionalCalculations.Units.UnitsLength;
 using DimensionalCalculations.Units.UnitsLuminousIntensity;
 using DimensionalCalculations.Units.UnitsMass;
 using DimensionalCalculations.Units.UnitsPower;
+using DimensionalCalculations.Units.UnitsPressure;
 using DimensionalCalculations.Units.UnitsTemperature;
 using DimensionalCalculations.Units.UnitsTime;
+using DimensionalCalculations.Units.UnitsVolume;
 
 namespace DimensionalCalculations
 {
@@ -36,8 +40,12 @@ namespace DimensionalCalculations
             #region Length 
  
             { typeof(Meter), new string[]{ "m", "м" } },
-            { typeof(Mile), new string[]{ "mi", "миля" } }, 
- 
+            { typeof(Mile), new string[]{ "mi", "миля" } },
+            { typeof(LightYear), new string[]{ "ly", "св.год" } },
+            { typeof(AstronomicalUnit), new string[]{ "au", "AU", "а.е." } },
+            { typeof(Parsec), new string[]{ "pc", "пк" } },
+            { typeof(Angstrem), new string[]{ "Å" } },
+
             #endregion 
  
             #region Luminous intensity 
@@ -50,15 +58,16 @@ namespace DimensionalCalculations
  
             { typeof(Carat), new string[]{ "ct", "кар" } },
             { typeof(Gram),  new string[]{ "g", "г" } }, 
-            { typeof(Pound), new string[]{ "lb" } }, 
+            { typeof(Pound), new string[]{ "lb" } },
+            { typeof(Tonne), new string[]{ "t", "т"} },
  
             #endregion 
  
             #region Temperature 
  
-            { typeof(Celsius), new string[]{ "C", "С" } },
+            { typeof(Celsius), new string[]{ "°C", "°С", "Celsius" } },
             { typeof(Kelvin), new string[]{ "K", "К" } },
-            { typeof(Fahrenheit), new string[]{ "F" } }, 
+            { typeof(Fahrenheit), new string[]{ "°F", "Fahrenheit" } }, 
  
             #endregion 
  
@@ -71,6 +80,30 @@ namespace DimensionalCalculations
             #endregion
 
             #region Complex units 
+
+            #region Area
+
+            { typeof(Are), new string[]{ "a", "а", "ар" } },
+            { typeof(Acre), new string[]{ "ac", "акр" } },
+
+            #endregion
+
+            #region Volume
+
+            { typeof(Litre), new string[]{ "l", "L", "л" } },
+            { typeof(Pint), new string[]{ "pint", "пинта" } },
+            { typeof(Barrel), new string[]{ "bbls", "баррель" } },
+            //{ typeof(Teaspoon), new string[]{ "l", "л" } },
+            //{ typeof(Tablespoon), new string[]{ "l", "л" } },
+            //{ typeof(Gill), new string[]{ "l", "л" } },
+            //{ typeof(Quart), new string[]{ "l", "л" } },
+            //{ typeof(Gallon), new string[]{ "l", "л" } },
+            //{ typeof(Cord), new string[]{ "l", "л" } },
+            //{ typeof(Peck), new string[]{ "l", "л" } },
+            //{ typeof(Bushel), new string[]{ "l", "л" } },
+            //{ typeof(Hogshead), new string[]{ "l", "л" } },
+
+            #endregion
 
             #region Force
 
@@ -86,6 +119,17 @@ namespace DimensionalCalculations
 
             #endregion
 
+            #region Pressure
+
+            { typeof(Pascal), new string[]{ "Pa", "Па" } },
+            { typeof(Bar), new string[] { "bar", "бар" } },
+            { typeof(StandardAtmosphere), new string[] { "atm", "атм" } },
+            { typeof(TechnicalAtmosphere), new string[] { "at" } },
+            { typeof(Torr), new string[] { "Torr" } },
+            { typeof(mmHg), new string[] { "mmHg", "mm.Hg", "мм.рт.ст" } },
+
+            #endregion
+
             #region Energy
 
             { typeof(Joule), new string[]{ "J", "Дж" } },
@@ -94,8 +138,17 @@ namespace DimensionalCalculations
 
             #endregion
 
+            #region Other electricity units
+
+            { typeof(Volt), new string[]{ "V", "В" } },
+            { typeof(Ohm), new string[] { "Ohm", "Ω", "Ом" } },
+            { typeof(Coulomb), new string[]{ "C", "Кл" } },
+            { typeof(Farad), new string[]{ "F", "Ф" } },
+
+            #endregion 
+
             #endregion
-        };
+            };
 
         #endregion
 
@@ -202,11 +255,17 @@ namespace DimensionalCalculations
                         GetAbstractUnit("N"),
                         GetAbstractUnit("J"),
                         GetAbstractUnit("W"),
+                        GetAbstractUnit("Pa"),
+                        GetAbstractUnit("V"),
+                        GetAbstractUnit("Ohm"),
+                        GetAbstractUnit("C"),
+                        GetAbstractUnit("F"),
                     };
                     break;
                 case SystemOfUnits.SGS:
                     output = new List<AbstractUnit>()
                     {
+                        // TODO: Make SGS as SI
                         new MetricPrefixDecorator(new Meter(), -2),
                         new Gram(),
                         new Second(),
