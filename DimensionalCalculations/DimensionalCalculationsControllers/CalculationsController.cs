@@ -14,7 +14,7 @@ namespace DimensionalCalculationsControllers
             { Operator.Divide, '/' }
         };
 
-        public void ProcessString(string str)
+        public string ProcessString(string str)
         {
             str = str.Replace("\r", "").Replace("\n", "");
 
@@ -37,7 +37,7 @@ namespace DimensionalCalculationsControllers
             }
 
             string pqStr = DimensionSimplifier.ConvertToString(result, SystemOfUnits.SystemInternational);
-            Console.WriteLine(pqStr);
+            return pqStr;
         }
 
         private void SplitPhysicalQuantitiesAndOperators(string str, 
