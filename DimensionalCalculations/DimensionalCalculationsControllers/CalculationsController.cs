@@ -1,6 +1,8 @@
 ﻿using DimensionalCalculations;
 using DimensionalCalculations.DimensionOperations;
+using DimensionalCalculations.Exceptions;
 using MathEquationParsing;
+using MathEquationParsing.Exceptions;
 
 namespace DimensionalCalculationsControllers
 {
@@ -15,6 +17,42 @@ namespace DimensionalCalculationsControllers
         };
 
         public string ProcessString(string str)
+        {
+            try
+            {
+                return DoProcessString(str);
+            }
+            catch (ArgumentException ex)
+            {
+                return ex.Message;
+            }
+            catch(IncorrectMetricPrefixException ex)
+            {
+                return ex.Message;
+            }
+            catch(PhysicalDimensionMustAgreeException ex)
+            {
+                return ex.Message;
+            }
+            catch (IncorrectBracketsException ex)
+            {
+                return ex.Message;
+            }
+            catch (IncorrectUnitException ex)
+            {
+                return ex.Message;
+            }
+            catch (MathEquationParsingException ex)
+            {
+                return ex.Message;
+            }
+            catch (PhysicalQuantityParsingException ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        private string DoProcessString(string str)
         {
             str = str.Replace("\r", "").Replace("\n", "");
 
