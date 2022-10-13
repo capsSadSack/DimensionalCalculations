@@ -22,33 +22,21 @@ namespace DimensionalCalculationsControllers
             {
                 return DoProcessString(str);
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
-                return ex.Message;
-            }
-            catch(IncorrectMetricPrefixException ex)
-            {
-                return ex.Message;
-            }
-            catch(PhysicalDimensionMustAgreeException ex)
-            {
-                return ex.Message;
-            }
-            catch (IncorrectBracketsException ex)
-            {
-                return ex.Message;
-            }
-            catch (IncorrectUnitException ex)
-            {
-                return ex.Message;
-            }
-            catch (MathEquationParsingException ex)
-            {
-                return ex.Message;
-            }
-            catch (PhysicalQuantityParsingException ex)
-            {
-                return ex.Message;
+                if (ex is ArgumentException ||
+                    ex is IncorrectMetricPrefixException ||
+                    ex is PhysicalDimensionMustAgreeException ||
+                    ex is IncorrectBracketsException ||
+                    ex is IncorrectUnitException ||
+                    ex is MathEquationParsingException ||
+                    ex is PhysicalQuantityParsingException)
+                {
+                    Console.WriteLine(ex.Message);
+                    return string.Empty;
+                }
+
+                throw;
             }
         }
 
