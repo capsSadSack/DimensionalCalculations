@@ -1,6 +1,8 @@
 ﻿using DimensionalCalculations;
 using DimensionalCalculations.DimensionOperations;
+using DimensionalCalculations.Exceptions;
 using MathEquationParsing;
+using MathEquationParsing.Exceptions;
 
 namespace DimensionalCalculationsControllers
 {
@@ -14,7 +16,33 @@ namespace DimensionalCalculationsControllers
             { Operator.Divide, '/' }
         };
 
-        public void ProcessString(string str)
+        public bool TryProcessString(string str, out string processedStr)
+        {
+            try
+            {
+                processedStr = DoProcessString(str);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                if (ex is ArgumentException ||
+                    ex is IncorrectMetricPrefixException ||
+                    ex is PhysicalDimensionMustAgreeException ||
+                    ex is IncorrectBracketsException ||
+                    ex is IncorrectUnitException ||
+                    ex is MathEquationParsingException ||
+                    ex is PhysicalQuantityParsingException)
+                {
+                    Console.WriteLine(ex.Message);
+                    processedStr = string.Empty;
+                    return false;
+                }
+
+                throw;
+            }
+        }
+
+        private string DoProcessString(string str)
         {
             str = str.Replace("\r", "").Replace("\n", "");
 
@@ -37,7 +65,7 @@ namespace DimensionalCalculationsControllers
             }
 
             string pqStr = DimensionSimplifier.ConvertToString(result, SystemOfUnits.SystemInternational);
-            Console.WriteLine(pqStr);
+            return pqStr;
         }
 
         private void SplitPhysicalQuantitiesAndOperators(string str, 
