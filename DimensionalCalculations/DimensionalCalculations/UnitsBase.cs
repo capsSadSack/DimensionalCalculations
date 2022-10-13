@@ -1,6 +1,7 @@
 ﻿using DimensionalCalculations.Units;
 using DimensionalCalculations.Units.AllUnitsElectricity;
 using DimensionalCalculations.Units.UnitsAmountOfSubstance;
+using DimensionalCalculations.Units.UnitsArea;
 using DimensionalCalculations.Units.UnitsCurrent;
 using DimensionalCalculations.Units.UnitsEnergy;
 using DimensionalCalculations.Units.UnitsForce;
@@ -39,8 +40,12 @@ namespace DimensionalCalculations
             #region Length 
  
             { typeof(Meter), new string[]{ "m", "м" } },
-            { typeof(Mile), new string[]{ "mi", "миля" } }, 
- 
+            { typeof(Mile), new string[]{ "mi", "миля" } },
+            { typeof(LightYear), new string[]{ "ly", "св.год" } },
+            { typeof(AstronomicalUnit), new string[]{ "au", "AU", "а.е." } },
+            { typeof(Parsec), new string[]{ "pc", "пк" } },
+            { typeof(Angstrem), new string[]{ "Å" } },
+
             #endregion 
  
             #region Luminous intensity 
@@ -78,7 +83,8 @@ namespace DimensionalCalculations
 
             #region Area
 
-            //{ typeof(Acre), new string[]{ "N", "Н" } },
+            { typeof(Are), new string[]{ "a", "а", "ар" } },
+            { typeof(Acre), new string[]{ "ac", "акр" } },
 
             #endregion
 
