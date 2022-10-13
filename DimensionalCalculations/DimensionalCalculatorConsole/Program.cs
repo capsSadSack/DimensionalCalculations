@@ -1,27 +1,45 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Enter physical quantity. ");
-Console.WriteLine("At first, its value, than units (e.g. 1 (m) / (s^2))");
-Console.WriteLine("Than - operator (e.g. +, -, *, /)");
-Console.WriteLine("And the next physical quantity.");
+﻿Console.WriteLine("Enter physical quantity or math equation with physical quantities.");
 Console.WriteLine("To start calculations enter '='.\n");
+Console.WriteLine("To exit enter 'x'.\n");
 
 string str = string.Empty;
-
-while(true)
+while (!IsExitString(str))
 {
-    char ch = (char)Console.Read();
-    if (ch != '=')
+    str = string.Empty;
+
+    while (true)
     {
-        str += ch;
+        char ch = (char)Console.Read();
+        if (ch == '=')
+        {
+            break;
+        }
+        else
+        {
+            str += ch;
+        }
+
+        if (IsExitString(RemoveCarrierSymbols(str)))
+        {
+            Environment.Exit(0);
+        }
     }
-    else
+
+    var controller = new DimensionalCalculationsControllers.CalculationsController();
+    if(controller.TryProcessString(str, out string resultStr))
     {
-        break;
+        Console.WriteLine($"{ str.Trim(' ') } = { resultStr }");
     }
 }
 
-var controller = new DimensionalCalculationsControllers.CalculationsController();
-controller.ProcessString(str);
+Environment.Exit(0);
 
+bool IsExitString(string str)
+{
+    return str == "x" || str == "X" || str == "х" || str == "Х";
+}
 
-
+string RemoveCarrierSymbols(string str)
+{
+    return str.Replace("\r", "").Replace("\n", "");
+}

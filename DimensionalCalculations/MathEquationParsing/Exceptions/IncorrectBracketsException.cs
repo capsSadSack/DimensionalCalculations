@@ -1,6 +1,6 @@
 ﻿namespace MathEquationParsing.Exceptions
 {
-    internal class IncorrectBracketsException : Exception
+    public class IncorrectBracketsException : Exception
     {
         public IncorrectBracketsException() : base()
         {

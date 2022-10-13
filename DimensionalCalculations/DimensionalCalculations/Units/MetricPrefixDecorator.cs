@@ -4,6 +4,13 @@
     {
         private double _multiplicationNumber;
 
+        public double MultiplicationNumber
+        {
+            get => _multiplicationNumber;
+        }
+
+        public Type Type { get; }
+
         public override DimensionVector Dimension
         {
             get
@@ -20,6 +27,7 @@
         public MetricPrefixDecorator(AbstractUnit instance, int powerOfTen) 
             : base(instance)
         {
+            Type = instance.GetType();
             _multiplicationNumber = Math.Pow(10, powerOfTen);
         }
 
